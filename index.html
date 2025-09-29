@@ -435,6 +435,7 @@
       cursor: pointer;
       font-size: 1rem; 
       display: inline-block;
+      text-align: center; /* Centrar el texto en los botones */
     }
 
     /* ---------------------------------------------------------------------- */
@@ -535,7 +536,7 @@
   </div>
 
   <script>
-    // --- LÓGICA DEL TAROT (ACTUALIZADA) ---
+    // --- LÓGICA DEL TAROT (Mantenida) ---
     const tarotDeck = [
         { name: "0. El Loco", meaning: "Nuevos comienzos, aventura, fe ciega.", concept: "el nuevo comienzo" },
         { name: "I. El Mago", meaning: "Habilidad, acción, conciencia, creatividad.", concept: "la habilidad" },
@@ -680,7 +681,7 @@
         document.getElementById('drawButton').onclick = shuffleAndDrawCards; 
     }
 
-    // --- LÓGICA DEL CHAT (Mantenida) ---
+    // --- LÓGICA DEL CHAT (ACTUALIZADA) ---
 
     const chatOverlay = document.getElementById('chatOverlay');
     const chatMessages = document.getElementById('chatMessages');
@@ -844,6 +845,72 @@
         pasoAgendar = 3; 
     }
 
+    /**
+     * FUNCIÓN NUEVA: Muestra el resumen y el precio antes de enviar a WhatsApp.
+     */
+    function mostrarConfirmacionFinal() {
+        const confirmMessage = `
+            <h3>✅ Confirmación de Cita</h3>
+            <p>¡Gracias, **${datosCliente.nombre} ${datosCliente.apellido}**! Estás a un paso de agendar tu sesión.</p>
+
+            <h4>Tu Sesión Incluye:</h4>
+            <div style="background: #250046; padding: 10px; border-radius: 8px;">
+                <p style="margin: 0; font-weight: bold; color: #e0b3ff; text-align: center; border-bottom: 1px solid #370055; padding-bottom: 5px;">
+                    ✨ **${datosCliente.tipoCita}** ✨
+                </p>
+                <ul style="padding-left: 20px; margin: 10px 0; font-size: 0.95rem;">
+                    <li>**Lectura Guiada del Tarot** (para claridad y dirección).</li>
+                    <li>**Terapia Energética con Cristales** (para limpieza y alineación).</li>
+                    <li>**Consulta con el Péndulo** (para respuestas concisas).</li>
+                </ul>
+                <p style="text-align: center; font-size: 1.1rem; font-weight: bold; color: #fff; margin: 0;">Costo Total: **50$**</p>
+            </div>
+            
+            <p style="margin-top: 15px;">**Tu Mensaje:** <i>"${datosCliente.mensaje}"</i></p>
+            <p style="margin-top: 10px; font-weight: bold; color: #e0b3ff; font-size: 0.95rem;">
+                Al hacer clic en "Agendar Cita", serás redirigido a WhatsApp para enviar los datos a Isabel y finalizar tu reserva.
+            </p>
+        `;
+        
+        mostrarMensaje("bot", confirmMessage);
+        
+        // Botón final de WhatsApp
+        const btnFinal = document.createElement('div');
+        btnFinal.classList.add('option');
+        btnFinal.textContent = "📲 Agendar Cita y Enviar por WhatsApp";
+        btnFinal.onclick = enviarCitaWhatsApp;
+        chatMessages.appendChild(btnFinal);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+    
+    /**
+     * FUNCIÓN NUEVA: Lógica para generar y abrir la URL de WhatsApp.
+     */
+    function enviarCitaWhatsApp() {
+        // Mensaje de WhatsApp con el Tipo de Cita UNIFICADO
+        const numeroDestino = "584142078502";
+        const texto = `Hola, quiero agendar una cita.\nTipo de Cita: ${datosCliente.tipoCita}\nNombre: ${datosCliente.nombre} ${datosCliente.apellido}\nPaís: ${datosCliente.pais}\nTeléfono: ${datosCliente.prefijo}${datosCliente.telefono}\nMensaje: ${datosCliente.mensaje}`;
+        const url = `https://wa.me/${numeroDestino}?text=${encodeURIComponent(texto)}`;
+        
+        window.open(url, "_blank"); 
+        
+        // Mostrar opciones finales después de abrir WhatsApp
+        setTimeout(() => {
+            mostrarMensaje("bot", "Cita enviada a WhatsApp. ¿Quieres volver al inicio o salir?");
+            const btnInicio = document.createElement('div');
+            btnInicio.classList.add('option');
+            btnInicio.textContent = "🔄 Volver al inicio";
+            btnInicio.onclick = () => { chatMessages.innerHTML = ""; abrirChat(); };
+            chatMessages.appendChild(btnInicio);
+
+            const btnSalir = document.createElement('div');
+            btnSalir.classList.add('option');
+            btnSalir.textContent = "❌ Salir";
+            btnSalir.onclick = () => cerrarChat(); 
+            chatMessages.appendChild(btnSalir);
+        }, 1000);
+    }
+
 
     function manejarOpcion(action) {
       if (action === "tarot") {
@@ -909,30 +976,11 @@ Esta experiencia holística tiene un **costo total de 50$**.`);
           pasoAgendar = 4;
         } else if (pasoAgendar === 4) {
           datosCliente.mensaje = msg;
-          mostrarMensaje("bot", "¡Gracias! Ahora te enviaré a **WhatsApp** para confirmar tu cita. Por favor, verifica el mensaje antes de enviarlo.");
           
-          // Mensaje de WhatsApp con el Tipo de Cita UNIFICADO
-          const numeroDestino = "584142078502";
-          const texto = `Hola, quiero agendar una cita.\nTipo de Cita: ${datosCliente.tipoCita}\nNombre: ${datosCliente.nombre} ${datosCliente.apellido}\nPaís: ${datosCliente.pais}\nTeléfono: ${datosCliente.prefijo}${datosCliente.telefono}\nMensaje: ${datosCliente.mensaje}`;
-          const url = `https://wa.me/${numeroDestino}?text=${encodeURIComponent(texto)}`;
+          // MOSTRAR CONFIRMACIÓN FINAL CON PRECIO Y BOTÓN DE WHATSAPP
+          mostrarConfirmacionFinal();
           
-          window.open(url, "_blank"); 
-          
-          pasoAgendar = "fin";
-          setTimeout(() => {
-            mostrarMensaje("bot", "¿Quieres volver al inicio o salir?");
-            const btnInicio = document.createElement('div');
-            btnInicio.classList.add('option');
-            btnInicio.textContent = "🔄 Volver al inicio";
-            btnInicio.onclick = () => { chatMessages.innerHTML = ""; abrirChat(); };
-            chatMessages.appendChild(btnInicio);
-
-            const btnSalir = document.createElement('div');
-            btnSalir.classList.add('option');
-            btnSalir.textContent = "❌ Salir";
-            btnSalir.onclick = () => cerrarChat(); 
-            chatMessages.appendChild(btnSalir);
-          }, 2000);
+          pasoAgendar = "fin"; // Detener el flujo de agendamiento por texto
         }
       } else {
           // Respuesta por defecto si no está en un flujo de agendamiento activo (pasoAgendar <= 0)
