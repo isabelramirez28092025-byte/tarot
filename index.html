@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tarot y Energías</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom, #1e0033, #000);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    header {
+      text-align: center;
+      padding: 1.5rem;
+    }
+
+    header img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 0 15px #a855f7;
+    }
+
+    header h1 {
+      margin: 1rem 0 0.5rem;
+      font-size: 1.8rem;
+      color: #e0b3ff;
+    }
+
+    header p {
+      font-size: 0.95rem;
+      color: #ddd;
+      max-width: 330px;
+      margin: auto;
+      line-height: 1.5rem;
+    }
+
+    main {
+      text-align: center;
+      padding: 1rem;
+      max-width: 350px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2rem;
+      gap: 10px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 30px;
+      font-size: 1rem;
+      cursor: pointer;
+      color: white;
+      background: #8338ec;
+      transition: background 0.3s;
+    }
+
+    .btn:hover {
+      background: #a855f7;
+    }
+
+    /* Chat bubble */
+    .chat-icon {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #8338ec;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      animation: pulse 1.5s infinite;
+      z-index: 1000;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 5px #a855f7; }
+      50% { box-shadow: 0 0 20px #a855f7; }
+      100% { box-shadow: 0 0 5px #a855f7; }
+    }
+
+    /* Chat window */
+    .chat-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      justify-content: flex-end;
+      align-items: flex-end;
+      z-index: 999;
+    }
+
+    .chat-container {
+      width: 360px;
+      max-height: 500px;
+      background: #1e0033;
+      border: 1px solid #8338ec;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(131, 56, 236, 0.8);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 1000;
+    }
+
+    .chat-header {
+      background: #8338ec;
+      padding: 10px;
+      color: white;
+      font-weight: bold;
+      text-align: center;
+      position: relative;
+    }
+
+    .chat-header .close-btn {
+      position: absolute;
+      right: 10px;
+      top: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      font-size: 1rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-input {
+      display: flex;
+      border-top: 1px solid #8338ec;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      outline: none;
+      font-size: 1rem;
+      background: #250046;
+      color: white;
+    }
+
+    .chat-input button {
+      background: #8338ec;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      color: white;
+      font-weight: bold;
+    }
+
+    .message {
+      margin: 5px 0;
+      padding: 10px 14px;
+      border-radius: 15px;
+      max-width: 80%;
+      word-wrap: break-word;
+    }
+
+    .user {
+      align-self: flex-end;
+      background: #a855f7;
+      color: white;
+    }
+
+    .bot {
+      align-self: flex-start;
+      background: #370055;
+      color: #e0b3ff;
+    }
+
+    .option {
+      background: #8338ec;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 20px;
+      margin: 5px 0;
+      cursor: pointer;
+      font-size: 0.9rem;
+      display: inline-block;
+    }
+
+    /* Mobile view */
+    @media (max-width: 480px) {
+      .chat-container {
+        width: 95%;
+        max-height: 75%;
+      }
+      .chat-messages {
+        max-height: calc(100% - 60px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="https://github.com/isabelramirez28092025-byte/tarot/blob/main/WhatsApp%20Image%202025-09-28%20at%201.00.07%20PM.jpeg?raw=true" alt="Perfil Tarot">
+    <h1>Tarot & Energías</h1>
+    <p>
+      Me especializo en Terapias de Cristales de Cuarzo para la limpieza profunda del cuerpo, alma, espíritu y aura.  
+      <br><br>
+      🌟 <b>Armonización de Chakras:</b> Alineando tus centros energéticos.  
+      ✨ <b>Limpieza Energética:</b> Disolviendo bloqueos y densidades.  
+      🔮 <b>Lecturas de Guía:</b> Péndulo (Sí/No) y Tarot para ofrecer claridad en tu camino.  
+    </p>
+  </header>
+
+  <main>
+    <div class="buttons">
+      <button class="btn" onclick="abrirChat()">Chatear Ahora</button>
+      <button class="btn" onclick="abrirAgendar()">Agendar Cita</button>
+    </div>
+  </main>
+
+  <!-- Chat bubble -->
+  <div class="chat-icon" onclick="abrirChat()">💬</div>
+
+  <!-- Chat overlay -->
+  <div class="chat-overlay" id="chatOverlay" onclick="cerrarChat(event)">
+    <div class="chat-container" onclick="event.stopPropagation()">
+      <div class="chat-header">
+        🔮 Tarot Asistente
+        <span class="close-btn" onclick="cerrarChat()">✖</span>
+      </div>
+      <div class="chat-messages" id="chatMessages"></div>
+      <div class="chat-input">
+        <input type="text" id="userInput" placeholder="Escribe tu mensaje...">
+        <button onclick="sendMessage()">➤</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const chatOverlay = document.getElementById('chatOverlay');
+    const chatMessages = document.getElementById('chatMessages');
+    const userInput = document.getElementById('userInput');
+
+    let pasoAgendar = 0;
+    let datosCliente = { nombre: "", apellido: "", pais: "", prefijo: "", telefono: "", mensaje: "" };
+
+    const paises = {
+      "Venezuela": "+58",
+      "Colombia": "+57",
+      "Argentina": "+54",
+      "México": "+52",
+      "España": "+34",
+      "Chile": "+56",
+      "Perú": "+51",
+      "Ecuador": "+593",
+      "Estados Unidos": "+1"
+    };
+
+    function abrirChat() {
+      chatOverlay.style.display = "flex";
+      if (!chatMessages.hasChildNodes()) {
+        mostrarMensaje("bot", "¡Hola! Bienvenido/a. ¿Sobre qué te gustaría hablar hoy?");
+        mostrarOpciones();
+      }
+    }
+
+    function abrirAgendar() {
+      abrirChat();
+      manejarOpcion("agendar");
+    }
+
+    function cerrarChat() {
+      chatOverlay.style.display = "none";
+    }
+
+    function mostrarMensaje(remitente, texto) {
+      const msg = document.createElement('div');
+      msg.classList.add('message', remitente);
+      msg.textContent = texto;
+      chatMessages.appendChild(msg);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function mostrarOpciones() {
+      const opciones = [
+        { text: "🔮 Hablar sobre el Tarot", action: "tarot" },
+        { text: "💎 Precios de las sesiones", action: "precios" },
+        { text: "✨ Terapias con cristales", action: "terapias" },
+        { text: "📿 Lectura del péndulo", action: "pendulo" },
+        { text: "📅 Agendar una cita", action: "agendar" }
+      ];
+      opciones.forEach(op => {
+        const btn = document.createElement('div');
+        btn.classList.add('option');
+        btn.textContent = op.text;
+        btn.onclick = () => manejarOpcion(op.action);
+        chatMessages.appendChild(btn);
+      });
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function manejarOpcion(action) {
+      if (action === "tarot") {
+        mostrarMensaje("bot", `📖 La lectura del Tarot es una herramienta de adivinación y autoconocimiento que utiliza un mazo de cartas con simbolismo e imágenes arquetípicas (como El Loco, La Muerte o La Torre).
+
+No predice un futuro inmutable, sino que actúa como un espejo psicológico y espiritual. Al sacar y colocar las cartas en una tirada específica, el lector interpreta el significado de los arcanos mayores y menores para:
+
+✨ Evaluar el Presente: Comprender las energías, desafíos y oportunidades actuales.
+✨ Explorar Opciones: Mostrar posibles caminos y tendencias futuras.
+✨ Fomentar la Introspección: Dar perspectiva sobre miedos, motivaciones y potencial.
+
+En esencia, el Tarot te ayuda a iluminar tu camino y comprender mejor tu vida.
+
+¿Quieres una lectura ahora? (sí/no)`);
+        pasoAgendar = "tarot";
+      } else if (action === "precios") {
+        mostrarMensaje("bot", `💲 Lista de precios:
+🔮 Lectura de Tarot: 50$
+📿 Lectura del Péndulo: 30$
+💎 Terapia con Cristales: 30$
+
+¿Deseas agendar una cita? (sí/no)`);
+        pasoAgendar = "precios";
+      } else if (action === "terapias") {
+        mostrarMensaje("bot", `💎 La Terapia con Cristales (o Cristaloterapia) es una práctica de bienestar holístico que utiliza piedras para interactuar con el campo energético del cuerpo.
+
+Se cree que:
+✨ Armonizan las energías inestables.
+✨ Limpian bloqueos y densidades emocionales.
+✨ Promueven la relajación profunda y claridad mental.
+
+En resumen, es una herramienta para fomentar el equilibrio energético interior. 💎✨
+
+¿Deseas agendar una sesión? (sí/no)`);
+        pasoAgendar = "terapias";
+      } else if (action === "pendulo") {
+        mostrarMensaje("bot", `📿 La Lectura con Péndulo se basa en la radiestesia, técnica que detecta energías y responde preguntas rápidas de Sí/No.
+
+¿Cómo funciona?
+✨ Conexión con tu subconsciente.
+✨ Amplificación de micro-movimientos en tu mano.
+✨ Respuestas claras programadas: Sí ➡️ giro horario / No ➡️ giro antihorario.
+
+Se utiliza para:
+✔ Preguntas concretas de Sí/No.
+✔ Diagnóstico energético de chakras.
+✔ Compatibilidad con personas o situaciones.
+
+En resumen, el Péndulo es ideal para obtener claridad rápida y precisa. ✨
+
+¿Deseas agendar una cita? (sí/no)`);
+        pasoAgendar = "pendulo";
+      } else if (action === "agendar") {
+        pasoAgendar = 1;
+        mostrarMensaje("bot", "Perfecto ✨ Empecemos tu cita. ¿Cuál es tu nombre?");
+      }
+    }
+
+    function sendMessage() {
+      const msg = userInput.value.trim();
+      if (!msg) return;
+      mostrarMensaje("user", msg);
+
+      if (pasoAgendar === "tarot" || pasoAgendar === "precios" || pasoAgendar === "terapias" || pasoAgendar === "pendulo") {
+        if (msg.toLowerCase() === "sí" || msg.toLowerCase() === "si") {
+          pasoAgendar = 1;
+          mostrarMensaje("bot", "Excelente ✨ Vamos a agendar. ¿Cuál es tu nombre?");
+        } else if (msg.toLowerCase() === "no") {
+          mostrarMensaje("bot", "¿Deseas volver al inicio? (sí/no)");
+          pasoAgendar = "volverInicio";
+        }
+      } else if (pasoAgendar === "volverInicio") {
+        if (msg.toLowerCase() === "sí" || msg.toLowerCase() === "si") {
+          chatMessages.innerHTML = "";
+          abrirChat();
+        } else {
+          mostrarMensaje("bot", "¡Gracias por tu visita! El chat se cerrará.");
+          setTimeout(() => cerrarChat(), 2000);
+        }
+      } else if (pasoAgendar > 0) {
+        if (pasoAgendar === 1) {
+          datosCliente.nombre = msg;
+          mostrarMensaje("bot", "Gracias 🙏 Ahora dime tu apellido.");
+          pasoAgendar = 2;
+        } else if (pasoAgendar === 2) {
+          datosCliente.apellido = msg;
+          mostrarMensaje("bot", "¿De qué país escribes?");
+          Object.keys(paises).forEach(p => {
+            const btn = document.createElement('div');
+            btn.classList.add('option');
+            btn.textContent = p;
+            btn.onclick = () => {
+              datosCliente.pais = p;
+              datosCliente.prefijo = paises[p];
+              mostrarMensaje("user", p);
+              mostrarMensaje("bot", `Perfecto. Para ${p}, escribe tu número en este formato: SIN el prefijo ${datosCliente.prefijo}. Ejemplo: 4121234567`);
+              pasoAgendar = 3;
+            };
+            chatMessages.appendChild(btn);
+          });
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        } else if (pasoAgendar === 3) {
+          datosCliente.telefono = msg;
+          mostrarMensaje("bot", "Por último, escribe un mensaje breve con lo que buscas en tu cita.");
+          pasoAgendar = 4;
+        } else if (pasoAgendar === 4) {
+          datosCliente.mensaje = msg;
+          mostrarMensaje("bot", "¡Gracias! Ahora te enviaré a WhatsApp para confirmar tu cita.");
+          
+          // Envío fijo al número solicitado
+          const numeroDestino = "584142078502";
+          const texto = `Hola, quiero agendar una cita.\nNombre: ${datosCliente.nombre} ${datosCliente.apellido}\nPaís: ${datosCliente.pais}\nTeléfono: ${datosCliente.prefijo}${datosCliente.telefono}\nMensaje: ${datosCliente.mensaje}`;
+          const url = `https://wa.me/${numeroDestino}?text=${encodeURIComponent(texto)}`;
+          
+          setTimeout(() => { window.open(url, "_blank"); }, 1000);
+          pasoAgendar = "fin";
+          setTimeout(() => {
+            mostrarMensaje("bot", "¿Quieres volver al inicio o salir?");
+            const btnInicio = document.createElement('div');
+            btnInicio.classList.add('option');
+            btnInicio.textContent = "🔄 Volver al inicio";
+            btnInicio.onclick = () => { chatMessages.innerHTML = ""; abrirChat(); };
+            chatMessages.appendChild(btnInicio);
+
+            const btnSalir = document.createElement('div');
+            btnSalir.classList.add('option');
+            btnSalir.textContent = "❌ Salir";
+            btnSalir.onclick = () => cerrarChat();
+            chatMessages.appendChild(btnSalir);
+          }, 2000);
+        }
+      }
+      userInput.value = '';
+    }
+
+    userInput.addEventListener("keypress", function(e) {
+      if (e.key === "Enter") sendMessage();
+    });
+  </script>
+</body>
+</html>
