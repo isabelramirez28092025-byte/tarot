@@ -690,7 +690,7 @@
         document.getElementById('drawButton').onclick = shuffleAndDrawCards; 
     }
 
-    // --- LÓGICA DEL CHAT (Mantenida) ---
+    // --- LÓGICA DEL CHAT (ACTUALIZADA LA PARTE DE PAÍSES) ---
 
     const chatOverlay = document.getElementById('chatOverlay');
     const chatMessages = document.getElementById('chatMessages');
@@ -702,6 +702,7 @@
     // Se inicializa tipoCita con el nombre de la sesión única
     let datosCliente = { nombre: "", apellido: "", tipoCita: "Sesión Integral de Equilibrio Vibracional ($50)", pais: "", prefijo: "", telefono: "", mensaje: "" };
 
+    // OBJETO PAÍSES Y PREFIJOS
     const paises = {
       "Venezuela": "+58",
       "Colombia": "+57",
@@ -846,16 +847,23 @@
         pasoAgendar = -1; // Esperando la selección de País (botón)
     }
 
+    /**
+     * CORRECCIÓN: Esta función ahora garantiza que el prefijo se guarde correctamente
+     * para CUALQUIER país seleccionado antes de pasar al paso 3.
+     */
     function seleccionarPais(p) {
+        const prefijo = paises[p]; // Obtiene el prefijo correctamente del objeto paises
+        
         datosCliente.pais = p;
-        datosCliente.prefijo = paises[p];
+        datosCliente.prefijo = prefijo;
+        
         mostrarMensaje("user", p);
-        mostrarMensaje("bot", `Perfecto. Para **${p}**, escribe tu número de teléfono SIN el prefijo ${datosCliente.prefijo}. Ejemplo: 4121234567`);
+        mostrarMensaje("bot", `Perfecto. Para **${p}**, escribe tu número de teléfono SIN el prefijo ${datosCliente.prefijo}. Solo el número.`);
         pasoAgendar = 3; 
     }
 
     /**
-     * FUNCIÓN NUEVA: Muestra el resumen y el precio antes de enviar a WhatsApp.
+     * FUNCIÓN: Muestra el resumen y el precio antes de enviar a WhatsApp.
      */
     function mostrarConfirmacionFinal() {
         const confirmMessage = `
@@ -893,7 +901,8 @@
     }
     
     /**
-     * FUNCIÓN NUEVA: Lógica para generar y abrir la URL de WhatsApp.
+     * FUNCIÓN: Lógica para generar y abrir la URL de WhatsApp.
+     * Aquí se concatenan el prefijo y el número de teléfono SIN el prefijo.
      */
     function enviarCitaWhatsApp() {
         // Mensaje de WhatsApp con el Tipo de Cita UNIFICADO
@@ -980,6 +989,7 @@ Esta experiencia holística tiene un **costo total de 50$**.`);
           pasoAgendar = -1; // Esperando la selección de País (botón)
           
         } else if (pasoAgendar === 3) {
+          // Si llega aquí, es porque ya seleccionó el país (pasoAgendar = -1 -> pasoAgendar = 3)
           datosCliente.telefono = msg;
           mostrarMensaje("bot", "Por último, escribe un **mensaje breve** con lo que buscas en tu cita.");
           pasoAgendar = 4;
