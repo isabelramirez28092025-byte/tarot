@@ -167,22 +167,28 @@
         min-height: 220px; /* Para mantener el espacio */
     }
 
+    /* ESTADO INICIAL (GRIS OSCURO) */
     .card {
         width: 30%;
         height: 180px;
         border-radius: 8px;
-        background-color: #370055; /* Dorso de la carta */
-        border: 2px solid #e0b3ff;
+        background-color: #250046; /* Gris muy oscuro/púrpura (Inicial) */
+        border: 2px solid #4a4a50; /* Borde gris oscuro */
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 0.8rem;
-        font-weight: bold;
-        color: #fff;
         perspective: 1000px; /* Para el efecto de volteo */
-        cursor: pointer;
+        cursor: default;
+        transition: border 0.3s, background-color 0.3s;
     }
 
+    /* ESTADO LISTO PARA VOLTEAR (LILA VIBRANTE) */
+    .card.ready-to-flip {
+        background-color: #370055; /* Fondo del dorso (un poco más claro) */
+        border: 2px solid #e0b3ff; /* Borde lila/púrpura */
+        cursor: pointer; 
+    }
+    
     .card.flipped {
         background-color: #250046; /* Color de frente de la carta */
         border: 2px solid #8338ec;
@@ -217,16 +223,28 @@
         border-radius: 6px;
     }
 
+    /* ESTILO POR DEFECTO DEL DORSO (antes de barajar) */
     .card-back {
-        background: repeating-linear-gradient(45deg, #8338ec, #8338ec 10px, #a855f7 10px, #a855f7 20px);
-        color: white;
-        font-size: 1.5rem;
+        background-color: #250046; 
+        color: #999; 
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+    
+    /* ESTILO DORSO (luego de barajar) */
+    .card.ready-to-flip .card-back {
+        background-color: #370055; 
+        color: #e0b3ff; /* Color lila para el texto */
+        font-weight: bold;
+        font-size: 0.9rem; /* Tamaño más pequeño para el texto de instrucción */
+        padding: 10px;
+        line-height: 1.4;
     }
 
     .card-front {
         background-color: #250046;
         color: #e0b3ff;
-        transform: rotateY(180deg); /* Asegura que el frente esté oculto inicialmente */
+        transform: rotateY(180deg); 
         font-size: 0.9rem;
     }
 
@@ -517,7 +535,7 @@
   </div>
 
   <script>
-    // --- LÓGICA DEL TAROT (Mantenida) ---
+    // --- LÓGICA DEL TAROT (ACTUALIZADA) ---
     const tarotDeck = [
         { name: "0. El Loco", meaning: "Nuevos comienzos, aventura, fe ciega.", concept: "el nuevo comienzo" },
         { name: "I. El Mago", meaning: "Habilidad, acción, conciencia, creatividad.", concept: "la habilidad" },
@@ -547,39 +565,49 @@
     let flippedCount = 0;
 
     function shuffleAndDrawCards() {
-        // 1. Resetear la interfaz
+        // 1. Resetear la interfaz y la clase ready-to-flip
         const cards = document.querySelectorAll('.card');
         cards.forEach(card => {
             card.classList.remove('flipped');
+            card.classList.remove('ready-to-flip'); // <-- Se elimina el estilo LILA
             card.querySelector('.card-front').innerHTML = '';
+            // Restablecer el contenido del dorso y el estilo inicial GRIS
+            card.querySelector('.card-back').innerHTML = 'TAROT'; 
         });
         document.getElementById('readingResult').style.display = 'none';
         document.getElementById('readingResult').innerHTML = '';
-        document.getElementById('drawButton').disabled = true; // Deshabilitar durante el sorteo
+        document.getElementById('drawButton').disabled = true; 
         flippedCount = 0;
-
+        document.getElementById('drawButton').textContent = 'Barajando...'; // Feedback
 
         // 2. Barajar y obtener 3 cartas (sin reemplazo)
         const shuffledDeck = [...tarotDeck].sort(() => 0.5 - Math.random());
         drawnCards = shuffledDeck.slice(0, 3);
 
-        // 3. Mostrar las cartas boca abajo 
+        // 3. Aplicar estilo "listo" (LILA) y el mensaje después del barajado
         setTimeout(() => {
             document.getElementById('drawButton').textContent = 'Haz clic en las cartas para revelarlas';
             document.getElementById('drawButton').disabled = false; 
+            
+            // Añadir clase y mensaje a las cartas
+            cards.forEach(card => {
+                card.classList.add('ready-to-flip'); // <-- Aplica color LILA
+                card.querySelector('.card-back').innerHTML = 'Clic aquí para voltear la carta'; // <-- Mensaje
+            });
+
         }, 500);
     }
 
     function flipCard(index) {
         // Permitir voltear si hay cartas sorteadas y no se han volteado todas
-        if (drawnCards.length < 3 || flippedCount >= 3) return; 
+        if (!document.getElementById(`card${index}`).classList.contains('ready-to-flip') || flippedCount >= 3) return; 
 
         const cardElement = document.getElementById(`card${index}`);
         if (cardElement.classList.contains('flipped')) return;
 
         const cardData = drawnCards[index - 1]; // Obtener la carta correspondiente (0, 1, o 2)
 
-        // 1. Rellenar el contenido frontal de la carta (usando 'meaning' completo)
+        // 1. Rellenar el contenido frontal de la carta 
         const frontElement = document.getElementById(`front${index}`);
         let position = index === 1 ? "Pasado" : index === 2 ? "Presente" : "Futuro";
         
@@ -589,7 +617,8 @@
             <span class="meaning">${cardData.meaning}</span>
         `;
 
-        // 2. Voltear la carta
+        // 2. Voltear la carta y quitar la clase ready-to-flip
+        cardElement.classList.remove('ready-to-flip');
         cardElement.classList.add('flipped');
         flippedCount++;
 
@@ -651,7 +680,7 @@
         document.getElementById('drawButton').onclick = shuffleAndDrawCards; 
     }
 
-    // --- LÓGICA DEL CHAT (ACTUALIZADA) ---
+    // --- LÓGICA DEL CHAT (Mantenida) ---
 
     const chatOverlay = document.getElementById('chatOverlay');
     const chatMessages = document.getElementById('chatMessages');
@@ -794,7 +823,7 @@
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
     
-    // NUEVA FUNCIÓN: Muestra botones de País (Reemplaza a mostrarOpcionesCita)
+    // FUNCIÓN: Muestra botones de País
     function mostrarOpcionesPais() {
         Object.keys(paises).forEach(p => {
             const btn = document.createElement('div');
@@ -869,7 +898,7 @@ Esta experiencia holística tiene un **costo total de 50$**.`);
         } else if (pasoAgendar === 2) {
           datosCliente.apellido = msg;
           
-          // *** CAMBIO: Se omite la pregunta de tipo de cita. Se pasa directo al país. ***
+          // Se pasa directo al país.
           mostrarMensaje("bot", "Excelente. ¿De qué país escribes? (Por favor, selecciona una opción)");
           mostrarOpcionesPais();
           pasoAgendar = -1; // Esperando la selección de País (botón)
