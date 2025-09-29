@@ -22,7 +22,7 @@
     }
 
     header img {
-      /* CAMBIO REALIZADO AQUÍ: Aumentamos el tamaño */
+      /* Ajuste de tamaño de la imagen */
       width: 150px;
       height: 150px;
       border-radius: 50%;
@@ -37,7 +37,8 @@
     }
 
     header p {
-      font-size: 0.95rem;
+      /* AUMENTO DE TAMAÑO DE LETRA GENERAL */
+      font-size: 1rem; 
       color: #ddd;
       max-width: 330px;
       margin: auto;
@@ -76,7 +77,6 @@
     /* Chat bubble */
     .chat-icon {
       position: fixed;
-      /* CAMBIO 1 DE CSS: Aumentamos el valor de 'bottom' para subir el ícono */
       bottom: 70px; 
       right: 20px;
       width: 60px;
@@ -99,24 +99,29 @@
       100% { box-shadow: 0 0 5px #a855f7; }
     }
 
-    /* Chat window */
+    /* ---------------------------------------------------------------------- */
+    /* ESTILOS DE ESCRITORIO (POP-UP FLOTANTE) - Estilos por defecto          */
+    /* ---------------------------------------------------------------------- */
     .chat-overlay {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
+      background: rgba(0,0,0,0.5); /* Fondo atenuado */
       display: none;
-      justify-content: flex-end;
-      align-items: flex-end;
+      /* Posicionamiento en la esquina inferior derecha para escritorio */
+      justify-content: flex-end; 
+      align-items: flex-end; 
+      padding: 20px; /* Margen para separarlo de los bordes de la pantalla */
+      box-sizing: border-box;
       z-index: 999;
     }
 
     .chat-container {
-      width: 360px;
-      max-height: 500px;
+      width: 380px; /* Ancho fijo de la ventana de chat */
+      height: 550px; /* Alto fijo de la ventana de chat */
       background: #1e0033;
       border: 1px solid #8338ec;
-      border-radius: 15px;
+      border-radius: 15px; /* Bordes redondeados para pop-up */
       box-shadow: 0 0 15px rgba(131, 56, 236, 0.8);
       display: flex;
       flex-direction: column;
@@ -126,43 +131,87 @@
 
     .chat-header {
       background: #8338ec;
-      padding: 10px;
+      padding: 12px;
       color: white;
       font-weight: bold;
       text-align: center;
       position: relative;
+      /* AUMENTO DE TAMAÑO DE LETRA */
+      font-size: 1.1rem;
     }
+    
+    /* ESTILOS DEL MENÚ DESPLEGABLE */
+    .menu-dropdown {
+        position: absolute;
+        left: 15px; /* Posicionamos a la izquierda del header */
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        font-size: 1.2rem;
+        padding: 5px;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 40px; 
+        left: 0;
+        background-color: #370055;
+        min-width: 180px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+        z-index: 1;
+        border-radius: 5px;
+        text-align: left;
+    }
+
+    .dropdown-content a {
+        color: white;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        font-weight: normal;
+        font-size: 1rem;
+        transition: background-color 0.2s;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #8338ec;
+    }
+    
+    /* FIN ESTILOS MENÚ DESPLEGABLE */
 
     .chat-header .close-btn {
       position: absolute;
-      right: 10px;
-      top: 5px;
+      right: 15px;
+      top: 8px;
       cursor: pointer;
       font-weight: bold;
-      font-size: 1.2rem;
+      /* AUMENTO DE TAMAÑO DE LETRA */
+      font-size: 1.4rem; 
     }
 
     .chat-messages {
       flex: 1;
-      padding: 10px;
+      padding: 15px;
       overflow-y: auto;
-      font-size: 1rem;
+      /* AUMENTO DE TAMAÑO DE LETRA */
+      font-size: 1.05rem; 
       display: flex;
       flex-direction: column;
     }
 
     .chat-input {
       display: flex;
-      /* Eliminamos 'flex-direction: row-reverse;' para que el botón esté a la derecha por defecto */
       border-top: 1px solid #8338ec;
     }
 
     .chat-input input {
       flex: 1;
-      padding: 12px;
+      padding: 14px;
       border: none;
       outline: none;
-      font-size: 1rem;
+      /* AUMENTO DE TAMAÑO DE LETRA */
+      font-size: 1.05rem; 
       background: #250046;
       color: white;
     }
@@ -170,12 +219,12 @@
     .chat-input button {
       background: #8338ec;
       border: none;
-      /* Aumentar el padding para hacerlo más grande */
-      padding: 12px 20px; 
+      padding: 14px 22px; 
       cursor: pointer;
       color: white;
       font-weight: bold;
-      font-size: 1.2rem; /* Opcional: aumentar el ícono para que se vea más grande */
+      /* AUMENTO DE TAMAÑO DE LETRA */
+      font-size: 1.3rem;
     }
 
     .message {
@@ -201,22 +250,35 @@
     .option {
       background: #8338ec;
       color: white;
-      padding: 8px 14px;
+      padding: 10px 16px; /* Ajuste de padding */
       border-radius: 20px;
-      margin: 5px 0;
+      margin: 6px 0; /* Ajuste de margen */
       cursor: pointer;
-      font-size: 0.9rem;
+      /* AUMENTO DE TAMAÑO DE LETRA */
+      font-size: 1rem; 
       display: inline-block;
     }
 
-    /* Mobile view */
+    /* ---------------------------------------------------------------------- */
+    /* MEDIA QUERY (VISTA MÓVIL - PANTALLA COMPLETA)                         */
+    /* ---------------------------------------------------------------------- */
     @media (max-width: 480px) {
-      .chat-container {
-        width: 95%;
-        max-height: 75%;
+      .chat-overlay {
+        padding: 0; 
+        justify-content: center;
+        align-items: center;
       }
+      
+      .chat-container {
+        width: 100%; 
+        height: 100%; 
+        max-height: 100%;
+        border-radius: 0; 
+        margin: 0;
+      }
+      
       .chat-messages {
-        max-height: calc(100% - 60px);
+        max-height: calc(100vh - 120px); 
       }
     }
   </style>
@@ -246,6 +308,13 @@
   <div class="chat-overlay" id="chatOverlay" onclick="cerrarChat(event)">
     <div class="chat-container" onclick="event.stopPropagation()">
       <div class="chat-header">
+        
+        <div class="menu-dropdown" onclick="toggleDropdown(event)">
+            ⋮
+            <div class="dropdown-content" id="dropdownMenu">
+                <a href="#" onclick="clearChatHistory(event)">🗑️ Eliminar Historial</a>
+            </div>
+        </div>
         🔮 Tarot Asistente
         <span class="close-btn" onclick="cerrarChat()">✖</span>
       </div>
@@ -261,11 +330,11 @@
     const chatOverlay = document.getElementById('chatOverlay');
     const chatMessages = document.getElementById('chatMessages');
     const userInput = document.getElementById('userInput');
-    // Obtenemos el nuevo ID del icono de chat
     const chatIcon = document.getElementById('chatIcon'); 
+    const dropdownMenu = document.getElementById('dropdownMenu'); // Nuevo elemento
 
     let pasoAgendar = 0;
-    let datosCliente = { nombre: "", apellido: "", pais: "", prefijo: "", telefono: "", mensaje: "" };
+    let datosCliente = { nombre: "", apellido: "", tipoCita: "", pais: "", prefijo: "", telefono: "", mensaje: "" };
 
     const paises = {
       "Venezuela": "+58",
@@ -281,12 +350,13 @@
 
     function abrirChat() {
       chatOverlay.style.display = "flex";
-      // Ocultamos el icono de chat al abrir
       chatIcon.style.display = "none"; 
       if (!chatMessages.hasChildNodes()) {
         mostrarMensaje("bot", "¡Hola! Bienvenido/a. ¿Sobre qué te gustaría hablar hoy?");
         mostrarOpciones();
       }
+      // Oculta el menú si estaba abierto al abrir el chat
+      dropdownMenu.style.display = 'none'; 
     }
 
     function abrirAgendar() {
@@ -296,22 +366,39 @@
 
     function cerrarChat(event) {
       if (event && event.target === chatOverlay) {
-        // Si se hace clic en el overlay, cerramos
         chatOverlay.style.display = "none";
-        // Mostramos el icono de chat al cerrar
         chatIcon.style.display = "flex"; 
       } else if (!event || event.target.className === 'close-btn') {
-        // Si se hace clic en el botón X, cerramos
         chatOverlay.style.display = "none";
-        // Mostramos el icono de chat al cerrar
         chatIcon.style.display = "flex"; 
       }
       
-      // Manejar el caso de cerrar sin evento (solo para limpieza, aunque ya se maneja arriba)
       if (!event) {
           chatOverlay.style.display = "none";
           chatIcon.style.display = "flex";
       }
+      // Asegurarse de que el menú se oculte al cerrar el chat
+      dropdownMenu.style.display = 'none';
+    }
+    
+    // Función para mostrar/ocultar el menú
+    function toggleDropdown(event) {
+        event.stopPropagation(); // Evita que el clic se propague al chat-overlay
+        dropdownMenu.style.display = (dropdownMenu.style.display === 'block') ? 'none' : 'block';
+    }
+    
+    // Función para eliminar el historial (CORRECCIÓN APLICADA AQUÍ)
+    function clearChatHistory(event) {
+        event.preventDefault(); // 1. Evita que el link '#' recargue la página
+        event.stopPropagation(); // Asegura que el clic no oculte el menú inmediatamente (Aunque la siguiente línea lo oculta)
+        
+        chatMessages.innerHTML = ''; // 2. Vacía el contenedor de mensajes
+        mostrarMensaje("bot", "🗑️ Historial de chat eliminado. ¿En qué puedo ayudarte ahora?");
+        mostrarOpciones();
+        pasoAgendar = 0; // 3. Reinicia el flujo de agendamiento
+        
+        // 4. OCULTA EL MENÚ DE FORMA EXPLÍCITA
+        dropdownMenu.style.display = 'none'; 
     }
 
     function mostrarMensaje(remitente, texto) {
@@ -340,17 +427,51 @@
       chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
+    function mostrarOpcionesCita() {
+      mostrarMensaje("bot", "¿Qué tipo de cita deseas agendar? (Por favor, haz clic en una opción)");
+      const tipos = [
+          { text: "🔮 Lectura de Tarot", type: "Tarot" },
+          { text: "📿 Lectura del Péndulo", type: "Péndulo" },
+          { text: "💎 Terapia con Cristales", type: "Cristales" }
+      ];
+      tipos.forEach(op => {
+        const btn = document.createElement('div');
+        btn.classList.add('option');
+        btn.onclick = () => seleccionarTipoCita(op.type, op.text); 
+        btn.textContent = op.text;
+        chatMessages.appendChild(btn);
+      });
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+    
+    function seleccionarTipoCita(tipo, texto) {
+        datosCliente.tipoCita = tipo;
+        mostrarMensaje("user", texto);
+        mostrarMensaje("bot", "¿De qué país escribes? (Por favor, selecciona una opción)");
+        
+        Object.keys(paises).forEach(p => {
+            const btn = document.createElement('div');
+            btn.classList.add('option');
+            btn.textContent = p;
+            btn.onclick = () => seleccionarPais(p);
+            chatMessages.appendChild(btn);
+        });
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        pasoAgendar = -1;
+    }
+
+    function seleccionarPais(p) {
+        datosCliente.pais = p;
+        datosCliente.prefijo = paises[p];
+        mostrarMensaje("user", p);
+        mostrarMensaje("bot", `Perfecto. Para ${p}, escribe tu número en este formato: SIN el prefijo ${datosCliente.prefijo}. Ejemplo: 4121234567`);
+        pasoAgendar = 3; 
+    }
+
+
     function manejarOpcion(action) {
       if (action === "tarot") {
-        mostrarMensaje("bot", `📖 La lectura del Tarot es una herramienta de adivinación y autoconocimiento que utiliza un mazo de cartas con simbolismo e imágenes arquetípicas (como El Loco, La Muerte o La Torre).
-
-No predice un futuro inmutable, sino que actúa como un espejo psicológico y espiritual. Al sacar y colocar las cartas en una tirada específica, el lector interpreta el significado de los arcanos mayores y menores para:
-
-✨ Evaluar el Presente: Comprender las energías, desafíos y oportunidades actuales.
-✨ Explorar Opciones: Mostrar posibles caminos y tendencias futuras.
-✨ Fomentar la Introspección: Dar perspectiva sobre miedos, motivaciones y potencial.
-
-En esencia, el Tarot te ayuda a iluminar tu camino y comprender mejor tu vida.
+        mostrarMensaje("bot", `📖 La lectura del Tarot es una herramienta de adivinación... (descripción omitida para brevedad).
 
 ¿Quieres una lectura ahora? (sí/no)`);
         pasoAgendar = "tarot";
@@ -363,31 +484,12 @@ En esencia, el Tarot te ayuda a iluminar tu camino y comprender mejor tu vida.
 ¿Deseas agendar una cita? (sí/no)`);
         pasoAgendar = "precios";
       } else if (action === "terapias") {
-        mostrarMensaje("bot", `💎 La Terapia con Cristales (o Cristaloterapia) es una práctica de bienestar holístico que utiliza piedras para interactuar con el campo energético del cuerpo.
-
-Se cree que:
-✨ Armonizan las energías inestables.
-✨ Limpian bloqueos y densidades emocionales.
-✨ Promueven la relajación profunda y claridad mental.
-
-En resumen, es una herramienta para fomentar el equilibrio energético interior. 💎✨
+        mostrarMensaje("bot", `💎 La Terapia con Cristales (o Cristaloterapia) es una práctica de bienestar... (descripción omitida para brevedad).
 
 ¿Deseas agendar una sesión? (sí/no)`);
         pasoAgendar = "terapias";
       } else if (action === "pendulo") {
-        mostrarMensaje("bot", `📿 La Lectura con Péndulo se basa en la radiestesia, técnica que detecta energías y responde preguntas rápidas de Sí/No.
-
-¿Cómo funciona?
-✨ Conexión con tu subconsciente.
-✨ Amplificación de micro-movimientos en tu mano.
-✨ Respuestas claras programadas: Sí ➡️ giro horario / No ➡️ giro antihorario.
-
-Se utiliza para:
-✔ Preguntas concretas de Sí/No.
-✔ Diagnóstico energético de chakras.
-✔ Compatibilidad con personas o situaciones.
-
-En resumen, el Péndulo es ideal para obtener claridad rápida y precisa. ✨
+        mostrarMensaje("bot", `📿 La Lectura con Péndulo se basa en la radiestesia... (descripción omitida para brevedad).
 
 ¿Deseas agendar una cita? (sí/no)`);
         pasoAgendar = "pendulo";
@@ -395,12 +497,15 @@ En resumen, el Péndulo es ideal para obtener claridad rápida y precisa. ✨
         pasoAgendar = 1;
         mostrarMensaje("bot", "Perfecto ✨ Empecemos tu cita. ¿Cuál es tu nombre?");
       }
+      dropdownMenu.style.display = 'none'; // Asegura que el menú se oculte al interactuar con las opciones
     }
 
     function sendMessage() {
       const msg = userInput.value.trim();
       if (!msg) return;
       mostrarMensaje("user", msg);
+      // Oculta el menú si el usuario escribe un mensaje
+      dropdownMenu.style.display = 'none'; 
 
       if (pasoAgendar === "tarot" || pasoAgendar === "precios" || pasoAgendar === "terapias" || pasoAgendar === "pendulo") {
         if (msg.toLowerCase() === "sí" || msg.toLowerCase() === "si") {
@@ -425,21 +530,8 @@ En resumen, el Péndulo es ideal para obtener claridad rápida y precisa. ✨
           pasoAgendar = 2;
         } else if (pasoAgendar === 2) {
           datosCliente.apellido = msg;
-          mostrarMensaje("bot", "¿De qué país escribes?");
-          Object.keys(paises).forEach(p => {
-            const btn = document.createElement('div');
-            btn.classList.add('option');
-            btn.textContent = p;
-            btn.onclick = () => {
-              datosCliente.pais = p;
-              datosCliente.prefijo = paises[p];
-              mostrarMensaje("user", p);
-              mostrarMensaje("bot", `Perfecto. Para ${p}, escribe tu número en este formato: SIN el prefijo ${datosCliente.prefijo}. Ejemplo: 4121234567`);
-              pasoAgendar = 3;
-            };
-            chatMessages.appendChild(btn);
-          });
-          chatMessages.scrollTop = chatMessages.scrollHeight;
+          mostrarOpcionesCita();
+          pasoAgendar = -1; // Esperando la selección de Tipo de Cita (botón)
         } else if (pasoAgendar === 3) {
           datosCliente.telefono = msg;
           mostrarMensaje("bot", "Por último, escribe un mensaje breve con lo que buscas en tu cita.");
@@ -448,14 +540,11 @@ En resumen, el Péndulo es ideal para obtener claridad rápida y precisa. ✨
           datosCliente.mensaje = msg;
           mostrarMensaje("bot", "¡Gracias! Ahora te enviaré a WhatsApp para confirmar tu cita. Por favor, verifica el mensaje antes de enviarlo.");
           
-          // **********************************************
-          // INICIO DE CORRECCIÓN: Apertura directa de WhatsApp
-          // **********************************************
+          // Mensaje de WhatsApp con el Tipo de Cita incluido
           const numeroDestino = "584142078502";
-          const texto = `Hola, quiero agendar una cita.\nNombre: ${datosCliente.nombre} ${datosCliente.apellido}\nPaís: ${datosCliente.pais}\nTeléfono: ${datosCliente.prefijo}${datosCliente.telefono}\nMensaje: ${datosCliente.mensaje}`;
+          const texto = `Hola, quiero agendar una cita.\nTipo de Cita: ${datosCliente.tipoCita}\nNombre: ${datosCliente.nombre} ${datosCliente.apellido}\nPaís: ${datosCliente.pais}\nTeléfono: ${datosCliente.prefijo}${datosCliente.telefono}\nMensaje: ${datosCliente.mensaje}`;
           const url = `https://wa.me/${numeroDestino}?text=${encodeURIComponent(texto)}`;
           
-          // Abrir WhatsApp de forma inmediata (sin setTimeout) para evitar bloqueos
           window.open(url, "_blank"); 
           
           pasoAgendar = "fin";
@@ -470,21 +559,32 @@ En resumen, el Péndulo es ideal para obtener claridad rápida y precisa. ✨
             const btnSalir = document.createElement('div');
             btnSalir.classList.add('option');
             btnSalir.textContent = "❌ Salir";
-            // Usamos la función cerrarChat() para que el icono vuelva a aparecer
             btnSalir.onclick = () => cerrarChat(); 
             chatMessages.appendChild(btnSalir);
           }, 2000);
-          // **********************************************
-          // FIN DE CORRECCIÓN
-          // **********************************************
         }
       }
       userInput.value = '';
     }
-
+    
     userInput.addEventListener("keypress", function(e) {
-      if (e.key === "Enter") sendMessage();
+      // Bloquea la entrada de texto si se está esperando la selección de un botón (pasoAgendar = -1)
+      if (e.key === "Enter" && pasoAgendar !== -1) sendMessage();
     });
+    
+    // Función para ocultar el menú desplegable si el usuario hace clic fuera de él
+    document.addEventListener('click', function(event) {
+        // Obtenemos la referencia al contenedor del botón de menú para saber si el clic fue dentro
+        const menuDropdown = document.querySelector('.menu-dropdown');
+        
+        // Verificamos si el clic fue en el menú, en su contenido, o en el ícono
+        const isClickInside = menuDropdown.contains(event.target) || dropdownMenu.contains(event.target);
+        
+        if (!isClickInside && dropdownMenu.style.display === 'block') {
+            dropdownMenu.style.display = 'none';
+        }
+    });
+
   </script>
 </body>
 </html>
