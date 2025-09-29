@@ -660,7 +660,8 @@
     const dropdownMenu = document.getElementById('dropdownMenu'); 
 
     let pasoAgendar = 0;
-    let datosCliente = { nombre: "", apellido: "", tipoCita: "", pais: "", prefijo: "", telefono: "", mensaje: "" };
+    // Se inicializa tipoCita con el nombre de la sesión única
+    let datosCliente = { nombre: "", apellido: "", tipoCita: "Sesión Integral de Equilibrio Vibracional ($50)", pais: "", prefijo: "", telefono: "", mensaje: "" };
 
     const paises = {
       "Venezuela": "+58",
@@ -754,7 +755,7 @@
       chatMessages.scrollTop = chatMessages.scrollHeight;
     }
     
-    // NUEVA FUNCIÓN: Muestra botones SÍ/NO y maneja la transición
+    // FUNCIÓN: Muestra botones SÍ/NO y maneja la transición
     function askYesNoQuestion(action) {
         // Create Yes button
         const btnYes = document.createElement('div');
@@ -793,29 +794,8 @@
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
     
-    function mostrarOpcionesCita() {
-      mostrarMensaje("bot", "¿Qué tipo de cita deseas agendar? (Por favor, haz clic en una opción)");
-      const tipos = [
-          { text: "🔮 Lectura de Tarot", type: "Tarot" },
-          { text: "📿 Lectura del Péndulo", type: "Péndulo" },
-          { text: "💎 Terapia con Cristales", type: "Cristales" }
-      ];
-      tipos.forEach(op => {
-        const btn = document.createElement('div');
-        btn.classList.add('option');
-        btn.onclick = () => seleccionarTipoCita(op.type, op.text); 
-        btn.textContent = op.text;
-        chatMessages.appendChild(btn);
-      });
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-      pasoAgendar = -1;
-    }
-    
-    function seleccionarTipoCita(tipo, texto) {
-        datosCliente.tipoCita = tipo;
-        mostrarMensaje("user", texto);
-        mostrarMensaje("bot", "¿De qué país escribes? (Por favor, selecciona una opción)");
-        
+    // NUEVA FUNCIÓN: Muestra botones de País (Reemplaza a mostrarOpcionesCita)
+    function mostrarOpcionesPais() {
         Object.keys(paises).forEach(p => {
             const btn = document.createElement('div');
             btn.classList.add('option');
@@ -824,14 +804,14 @@
             chatMessages.appendChild(btn);
         });
         chatMessages.scrollTop = chatMessages.scrollHeight;
-        pasoAgendar = -1; // Mantener en -1 hasta que se seleccione el país
+        pasoAgendar = -1; // Esperando la selección de País (botón)
     }
 
     function seleccionarPais(p) {
         datosCliente.pais = p;
         datosCliente.prefijo = paises[p];
         mostrarMensaje("user", p);
-        mostrarMensaje("bot", `Perfecto. Para **${p}**, escribe tu número en este formato: SIN el prefijo ${datosCliente.prefijo}. Ejemplo: 4121234567`);
+        mostrarMensaje("bot", `Perfecto. Para **${p}**, escribe tu número de teléfono SIN el prefijo ${datosCliente.prefijo}. Ejemplo: 4121234567`);
         pasoAgendar = 3; 
     }
 
@@ -868,11 +848,19 @@ Esta experiencia holística tiene un **costo total de 50$**.`);
     function sendMessage() {
       const msg = userInput.value.trim();
       if (!msg) return;
+      
+      // Bloquea la entrada de texto si está esperando una selección de botón (País)
+      if (pasoAgendar === -1) {
+          mostrarMensaje("bot", "Por favor, selecciona tu país de la lista de opciones para continuar.");
+          userInput.value = '';
+          return;
+      }
+      
       mostrarMensaje("user", msg);
       // Oculta el menú si el usuario escribe un mensaje
       dropdownMenu.style.display = 'none'; 
 
-      // ******* Lógica Simplificada: Solo maneja los pasos de texto del agendamiento (1, 2, 3, 4) *******
+      // ******* Lógica del Agendamiento (Pasos 1-4) *******
       if (pasoAgendar > 0) {
         if (pasoAgendar === 1) {
           datosCliente.nombre = msg;
@@ -880,8 +868,12 @@ Esta experiencia holística tiene un **costo total de 50$**.`);
           pasoAgendar = 2;
         } else if (pasoAgendar === 2) {
           datosCliente.apellido = msg;
-          mostrarOpcionesCita();
-          pasoAgendar = -1; // Esperando la selección de Tipo de Cita (botón)
+          
+          // *** CAMBIO: Se omite la pregunta de tipo de cita. Se pasa directo al país. ***
+          mostrarMensaje("bot", "Excelente. ¿De qué país escribes? (Por favor, selecciona una opción)");
+          mostrarOpcionesPais();
+          pasoAgendar = -1; // Esperando la selección de País (botón)
+          
         } else if (pasoAgendar === 3) {
           datosCliente.telefono = msg;
           mostrarMensaje("bot", "Por último, escribe un **mensaje breve** con lo que buscas en tu cita.");
@@ -890,7 +882,7 @@ Esta experiencia holística tiene un **costo total de 50$**.`);
           datosCliente.mensaje = msg;
           mostrarMensaje("bot", "¡Gracias! Ahora te enviaré a **WhatsApp** para confirmar tu cita. Por favor, verifica el mensaje antes de enviarlo.");
           
-          // Mensaje de WhatsApp con el Tipo de Cita incluido
+          // Mensaje de WhatsApp con el Tipo de Cita UNIFICADO
           const numeroDestino = "584142078502";
           const texto = `Hola, quiero agendar una cita.\nTipo de Cita: ${datosCliente.tipoCita}\nNombre: ${datosCliente.nombre} ${datosCliente.apellido}\nPaís: ${datosCliente.pais}\nTeléfono: ${datosCliente.prefijo}${datosCliente.telefono}\nMensaje: ${datosCliente.mensaje}`;
           const url = `https://wa.me/${numeroDestino}?text=${encodeURIComponent(texto)}`;
@@ -923,16 +915,12 @@ Esta experiencia holística tiene un **costo total de 50$**.`);
     }
     
     userInput.addEventListener("keypress", function(e) {
-      // Bloquea la entrada de texto si se está esperando la selección de un botón (pasoAgendar = -1)
-      if (e.key === "Enter" && pasoAgendar !== -1) sendMessage();
+      if (e.key === "Enter") sendMessage();
     });
     
     // Función para ocultar el menú desplegable si el usuario hace clic fuera de él
     document.addEventListener('click', function(event) {
-        // Obtenemos la referencia al contenedor del botón de menú para saber si el clic fue dentro
         const menuDropdown = document.querySelector('.menu-dropdown');
-        
-        // Verificamos si el clic fue en el menú, en su contenido, o en el ícono
         const isClickInside = menuDropdown.contains(event.target) || dropdownMenu.contains(event.target);
         
         if (!isClickInside && dropdownMenu.style.display === 'block') {
