@@ -22,8 +22,9 @@
     }
 
     header img {
-      width: 120px;
-      height: 120px;
+      /* CAMBIO REALIZADO AQUÍ: Aumentamos el tamaño */
+      width: 150px;
+      height: 150px;
       border-radius: 50%;
       object-fit: cover;
       box-shadow: 0 0 15px #a855f7;
@@ -75,7 +76,8 @@
     /* Chat bubble */
     .chat-icon {
       position: fixed;
-      bottom: 20px;
+      /* CAMBIO 1 DE CSS: Aumentamos el valor de 'bottom' para subir el ícono */
+      bottom: 70px; 
       right: 20px;
       width: 60px;
       height: 60px;
@@ -151,6 +153,7 @@
 
     .chat-input {
       display: flex;
+      /* Eliminamos 'flex-direction: row-reverse;' para que el botón esté a la derecha por defecto */
       border-top: 1px solid #8338ec;
     }
 
@@ -167,10 +170,12 @@
     .chat-input button {
       background: #8338ec;
       border: none;
-      padding: 10px 15px;
+      /* Aumentar el padding para hacerlo más grande */
+      padding: 12px 20px; 
       cursor: pointer;
       color: white;
       font-weight: bold;
+      font-size: 1.2rem; /* Opcional: aumentar el ícono para que se vea más grande */
     }
 
     .message {
@@ -236,10 +241,8 @@
     </div>
   </main>
 
-  <!-- Chat bubble -->
-  <div class="chat-icon" onclick="abrirChat()">💬</div>
+  <div class="chat-icon" id="chatIcon" onclick="abrirChat()">💬</div>
 
-  <!-- Chat overlay -->
   <div class="chat-overlay" id="chatOverlay" onclick="cerrarChat(event)">
     <div class="chat-container" onclick="event.stopPropagation()">
       <div class="chat-header">
@@ -258,6 +261,8 @@
     const chatOverlay = document.getElementById('chatOverlay');
     const chatMessages = document.getElementById('chatMessages');
     const userInput = document.getElementById('userInput');
+    // Obtenemos el nuevo ID del icono de chat
+    const chatIcon = document.getElementById('chatIcon'); 
 
     let pasoAgendar = 0;
     let datosCliente = { nombre: "", apellido: "", pais: "", prefijo: "", telefono: "", mensaje: "" };
@@ -276,6 +281,8 @@
 
     function abrirChat() {
       chatOverlay.style.display = "flex";
+      // Ocultamos el icono de chat al abrir
+      chatIcon.style.display = "none"; 
       if (!chatMessages.hasChildNodes()) {
         mostrarMensaje("bot", "¡Hola! Bienvenido/a. ¿Sobre qué te gustaría hablar hoy?");
         mostrarOpciones();
@@ -287,8 +294,24 @@
       manejarOpcion("agendar");
     }
 
-    function cerrarChat() {
-      chatOverlay.style.display = "none";
+    function cerrarChat(event) {
+      if (event && event.target === chatOverlay) {
+        // Si se hace clic en el overlay, cerramos
+        chatOverlay.style.display = "none";
+        // Mostramos el icono de chat al cerrar
+        chatIcon.style.display = "flex"; 
+      } else if (!event || event.target.className === 'close-btn') {
+        // Si se hace clic en el botón X, cerramos
+        chatOverlay.style.display = "none";
+        // Mostramos el icono de chat al cerrar
+        chatIcon.style.display = "flex"; 
+      }
+      
+      // Manejar el caso de cerrar sin evento (solo para limpieza, aunque ya se maneja arriba)
+      if (!event) {
+          chatOverlay.style.display = "none";
+          chatIcon.style.display = "flex";
+      }
     }
 
     function mostrarMensaje(remitente, texto) {
@@ -423,14 +446,18 @@ En resumen, el Péndulo es ideal para obtener claridad rápida y precisa. ✨
           pasoAgendar = 4;
         } else if (pasoAgendar === 4) {
           datosCliente.mensaje = msg;
-          mostrarMensaje("bot", "¡Gracias! Ahora te enviaré a WhatsApp para confirmar tu cita.");
+          mostrarMensaje("bot", "¡Gracias! Ahora te enviaré a WhatsApp para confirmar tu cita. Por favor, verifica el mensaje antes de enviarlo.");
           
-          // Envío fijo al número solicitado
+          // **********************************************
+          // INICIO DE CORRECCIÓN: Apertura directa de WhatsApp
+          // **********************************************
           const numeroDestino = "584142078502";
           const texto = `Hola, quiero agendar una cita.\nNombre: ${datosCliente.nombre} ${datosCliente.apellido}\nPaís: ${datosCliente.pais}\nTeléfono: ${datosCliente.prefijo}${datosCliente.telefono}\nMensaje: ${datosCliente.mensaje}`;
           const url = `https://wa.me/${numeroDestino}?text=${encodeURIComponent(texto)}`;
           
-          setTimeout(() => { window.open(url, "_blank"); }, 1000);
+          // Abrir WhatsApp de forma inmediata (sin setTimeout) para evitar bloqueos
+          window.open(url, "_blank"); 
+          
           pasoAgendar = "fin";
           setTimeout(() => {
             mostrarMensaje("bot", "¿Quieres volver al inicio o salir?");
@@ -443,9 +470,13 @@ En resumen, el Péndulo es ideal para obtener claridad rápida y precisa. ✨
             const btnSalir = document.createElement('div');
             btnSalir.classList.add('option');
             btnSalir.textContent = "❌ Salir";
-            btnSalir.onclick = () => cerrarChat();
+            // Usamos la función cerrarChat() para que el icono vuelva a aparecer
+            btnSalir.onclick = () => cerrarChat(); 
             chatMessages.appendChild(btnSalir);
           }, 2000);
+          // **********************************************
+          // FIN DE CORRECCIÓN
+          // **********************************************
         }
       }
       userInput.value = '';
