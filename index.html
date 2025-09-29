@@ -753,7 +753,46 @@
       });
       chatMessages.scrollTop = chatMessages.scrollHeight;
     }
+    
+    // NUEVA FUNCIÓN: Muestra botones SÍ/NO y maneja la transición
+    function askYesNoQuestion(action) {
+        // Create Yes button
+        const btnYes = document.createElement('div');
+        btnYes.classList.add('option');
+        btnYes.textContent = "✅ Sí, agendar cita";
+        btnYes.onclick = () => {
+            mostrarMensaje("user", "Sí");
+            pasoAgendar = 1; // Transición al primer paso de agendamiento
+            mostrarMensaje("bot", "Excelente ✨ Vamos a agendar. ¿Cuál es tu **nombre**?");
+        };
+        chatMessages.appendChild(btnYes);
 
+        // Create No button
+        const btnNo = document.createElement('div');
+        btnNo.classList.add('option');
+        btnNo.textContent = "❌ No, gracias";
+        btnNo.onclick = () => {
+            mostrarMensaje("user", "No, gracias");
+            mostrarMensaje("bot", "¿Deseas volver a ver las opciones principales o salir?");
+            
+            const btnInicio = document.createElement('div');
+            btnInicio.classList.add('option');
+            btnInicio.textContent = "🔄 Volver a opciones";
+            btnInicio.onclick = () => { mostrarMensaje("user", "Volver a opciones"); chatMessages.innerHTML = ""; abrirChat(); };
+            chatMessages.appendChild(btnInicio);
+
+            const btnSalir = document.createElement('div');
+            btnSalir.classList.add('option');
+            btnSalir.textContent = "❌ Salir";
+            btnSalir.onclick = () => { mostrarMensaje("user", "Salir"); cerrarChat(); }; 
+            chatMessages.appendChild(btnSalir);
+            
+            pasoAgendar = "fin"; // Detiene la interpretación de texto
+        };
+        chatMessages.appendChild(btnNo);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+    
     function mostrarOpcionesCita() {
       mostrarMensaje("bot", "¿Qué tipo de cita deseas agendar? (Por favor, haz clic en una opción)");
       const tipos = [
@@ -799,31 +838,26 @@
 
     function manejarOpcion(action) {
       if (action === "tarot") {
-        mostrarMensaje("bot", `📖 La lectura del Tarot es una herramienta de adivinación que ofrece guía y claridad en tu camino.
-
-¿Quieres una lectura ahora? (sí/no)`);
-        pasoAgendar = "tarot";
+        mostrarMensaje("bot", `📖 La lectura del Tarot es una herramienta de adivinación que ofrece guía y claridad en tu camino.`);
+        mostrarMensaje("bot", `**¿Te gustaría comenzar el proceso de agendamiento para una lectura?**`);
+        askYesNoQuestion("tarot");
       } else if (action === "precios") {
-        // RESPUESTA DE PRECIOS ACTUALIZADA CON SESIÓN INTEGRAL
         mostrarMensaje("bot", `✨ Nuestra sesión completa de **Equilibrio Vibracional** es un servicio integral que incluye:
 - **Lectura Guiada del Tarot** (para claridad y dirección).
 - **Terapia Energética con Cristales** (para limpieza y alineación).
 - **Consulta con el Péndulo** (para respuestas concisas).
 
-Esta experiencia holística tiene un **costo total de 50$**.
-
-¿Deseas agendar una cita para esta sesión? (sí/no)`);
-        pasoAgendar = "precios";
+Esta experiencia holística tiene un **costo total de 50$**.`);
+        mostrarMensaje("bot", `**¿Deseas agendar esta sesión integral de Equilibrio Vibracional?**`);
+        askYesNoQuestion("precios");
       } else if (action === "terapias") {
-        mostrarMensaje("bot", `💎 La Terapia con Cristales (o Cristaloterapia) es una práctica de bienestar que utiliza la energía de los cuarzos para armonizar tus chakras y limpiar tu aura.
-
-¿Deseas agendar una sesión? (sí/no)`);
-        pasoAgendar = "terapias";
+        mostrarMensaje("bot", `💎 La Terapia con Cristales (o Cristaloterapia) es una práctica de bienestar que utiliza la energía de los cuarzos para armonizar tus chakras y limpiar tu aura.`);
+        mostrarMensaje("bot", `**¿Deseas agendar una sesión de Terapia con Cristales?**`);
+        askYesNoQuestion("terapias");
       } else if (action === "pendulo") {
-        mostrarMensaje("bot", `📿 La Lectura con Péndulo se basa en la radiestesia, permitiendo obtener respuestas claras de 'Sí' o 'No' a preguntas específicas. Ideal para momentos de indecisión.
-
-¿Deseas agendar una cita? (sí/no)`);
-        pasoAgendar = "pendulo";
+        mostrarMensaje("bot", `📿 La Lectura con Péndulo se basa en la radiestesia, permitiendo obtener respuestas claras de 'Sí' o 'No' a preguntas específicas. Ideal para momentos de indecisión.`);
+        mostrarMensaje("bot", `**¿Deseas agendar una cita para una lectura con Péndulo?**`);
+        askYesNoQuestion("pendulo");
       } else if (action === "agendar") {
         pasoAgendar = 1;
         mostrarMensaje("bot", "Perfecto ✨ Empecemos tu cita. ¿Cuál es tu **nombre**?");
@@ -838,25 +872,8 @@ Esta experiencia holística tiene un **costo total de 50$**.
       // Oculta el menú si el usuario escribe un mensaje
       dropdownMenu.style.display = 'none'; 
 
-      if (pasoAgendar === "tarot" || pasoAgendar === "precios" || pasoAgendar === "terapias" || pasoAgendar === "pendulo") {
-        if (msg.toLowerCase() === "sí" || msg.toLowerCase() === "si") {
-          pasoAgendar = 1;
-          mostrarMensaje("bot", "Excelente ✨ Vamos a agendar. ¿Cuál es tu **nombre**?");
-        } else if (msg.toLowerCase() === "no") {
-          mostrarMensaje("bot", "¿Deseas volver al inicio? (sí/no)");
-          pasoAgendar = "volverInicio";
-        } else {
-            mostrarMensaje("bot", "Disculpa, solo puedo responder **sí** o **no** en este paso.");
-        }
-      } else if (pasoAgendar === "volverInicio") {
-        if (msg.toLowerCase() === "sí" || msg.toLowerCase() === "si") {
-          chatMessages.innerHTML = "";
-          abrirChat();
-        } else {
-          mostrarMensaje("bot", "¡Gracias por tu visita! El chat se cerrará.");
-          setTimeout(() => cerrarChat(), 2000);
-        }
-      } else if (pasoAgendar > 0) {
+      // ******* Lógica Simplificada: Solo maneja los pasos de texto del agendamiento (1, 2, 3, 4) *******
+      if (pasoAgendar > 0) {
         if (pasoAgendar === 1) {
           datosCliente.nombre = msg;
           mostrarMensaje("bot", "Gracias 🙏 Ahora dime tu **apellido**.");
@@ -897,7 +914,7 @@ Esta experiencia holística tiene un **costo total de 50$**.
           }, 2000);
         }
       } else {
-          // Respuesta por defecto si no está en un flujo
+          // Respuesta por defecto si no está en un flujo de agendamiento activo (pasoAgendar <= 0)
           mostrarMensaje("bot", "No tengo una respuesta específica para eso. ¿Te gustaría ver las **opciones principales** o **agendar una cita**?");
           mostrarOpciones();
           pasoAgendar = 0; // Reinicia el flujo
