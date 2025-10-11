@@ -99,11 +99,18 @@
     }
     /* --- FIN: ESTILOS PARA EL INDICADOR DE DESLIZAMIENTO --- */
 
-    /* Chat bubble */
+    /* INICIO: ESTILOS PARA EL BOTÓN FLOTANTE Y SU LEYENDA */
+    .chat-container-wrapper {
+        position: fixed;
+        bottom: 70px;
+        right: 20px;
+        z-index: 1000;
+        display: flex; /* Para alinear el botón y el texto */
+        align-items: center;
+    }
+
     .chat-icon {
-      position: fixed;
-      bottom: 70px; 
-      right: 20px;
+      /* Mantenido el estilo original del botón */
       width: 60px;
       height: 60px;
       border-radius: 50%;
@@ -115,8 +122,24 @@
       font-size: 1.5rem;
       cursor: pointer;
       animation: pulse 1.5s infinite;
-      z-index: 1000;
+      /* Se quitan las propiedades de posicionamiento fijo para usar el contenedor */
     }
+
+    /* Nuevo estilo para el globo de texto flotante */
+    .chat-label {
+        background-color: #a855f7; /* Lila más brillante */
+        color: white;
+        padding: 8px 12px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: bold;
+        white-space: nowrap; /* Evita que el texto se rompa */
+        margin-right: 10px; /* Separación del icono */
+        box-shadow: 0 0 10px rgba(168, 85, 247, 0.7);
+        position: relative;
+        cursor: pointer; /* Añadir cursor para indicar que es interactivo */
+    }
+    /* FIN: ESTILOS PARA EL BOTÓN FLOTANTE Y SU LEYENDA */
 
     @keyframes pulse {
       0% { box-shadow: 0 0 5px #a855f7; }
@@ -310,6 +333,56 @@
     }
     /* FIN ESTILOS AÑADIDOS TAROT */
 
+    /* INICIO: ESTILOS DEL MODAL DE RESTRICCIÓN */
+    .modal-overlay {
+        display: none; /* Oculto por defecto */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 2000; /* Asegurar que esté por encima de todo */
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background: #1e0033;
+        padding: 30px;
+        border-radius: 10px;
+        border: 2px solid #a855f7;
+        max-width: 90%;
+        width: 350px;
+        box-shadow: 0 5px 15px rgba(168, 85, 247, 0.5);
+        text-align: center;
+    }
+    
+    .modal-content h3 {
+        color: #e0b3ff;
+        margin-top: 0;
+        margin-bottom: 15px;
+    }
+    
+    .modal-content .next-date {
+        display: block;
+        font-size: 1.1rem;
+        font-weight: bold;
+        color: #ffcc00; /* Amarillo para resaltar la fecha */
+        margin: 10px 0;
+    }
+
+    .modal-content button {
+        background: #8338ec;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 20px;
+    }
+    /* FIN: ESTILOS DEL MODAL DE RESTRICCIÓN */
+
     /* ---------------------------------------------------------------------- */
     /* ESTILOS DE CHAT (Mantenidos) */
     /* ---------------------------------------------------------------------- */
@@ -468,6 +541,14 @@
     /* MEDIA QUERY (VISTA MÓVIL)                                            */
     /* ---------------------------------------------------------------------- */
     @media (max-width: 480px) {
+      .chat-container-wrapper {
+          bottom: 20px; /* Bajar un poco para dejar espacio en móviles */
+      }
+      .chat-label {
+          margin-right: 5px;
+          font-size: 0.8rem;
+          padding: 6px 10px;
+      }
       .chat-overlay {
         padding: 0; 
         justify-content: center;
@@ -544,13 +625,31 @@
         <p style="color: #e0b3ff; margin-bottom: 1rem; font-size: 1rem; font-weight: bold;">
             ¿Sientes la llamada? Da el primer paso hacia tu **Equilibrio Vibracional** total.
         </p>
-        <a href="https://wa.me/584142078502?text=Hola,%20me%20gustaría%20agendar%20mi%20sesión%20de%20Equilibrio%20Vibracional%20($50)" target="_blank" class="btn" style="width: 100%; display: block; box-sizing: border-box; text-decoration: none;">
-            📲 Agendar Cita por WhatsApp
-        </a>
+        <button class="btn" style="width: 100%; display: block; box-sizing: border-box;" onclick="abrirAgendar()">
+            Solicita tu consulta aquí 👇
+        </button>
     </div>
     </section>
 
-  <div class="chat-icon" id="chatIcon" onclick="abrirChat()">💬</div>
+  <div id="tarotModal" class="modal-overlay" onclick="closeTarotRestrictionModal(event)">
+      <div class="modal-content" onclick="event.stopPropagation()">
+          <h3>🛑 Restricción de Consulta Energética</h3>
+          <p>
+              Disculpa, pero solo puedes consultar el Tarot en la modalidad gratuita **una vez cada 30 días**.
+          </p>
+          <p style="font-size: 0.95rem;">
+              Esto es esencial para respetar los **flujos de energía**. Consultar repetidamente sobre la misma situación en un corto período de tiempo puede generar **confusión e inestabilidad** en tu guía.
+          </p>
+          <p>Podrás realizar una nueva tirada el:</p>
+          <span class="next-date" id="nextReadingDate"></span>
+          <p>Si necesitas una guía inmediata y personalizada, te invito a **agendar una cita** con Isabel:</p>
+          <button onclick="abrirAgendar()">📅 Agendar Cita con Isabel</button>
+      </div>
+  </div>
+  <div class="chat-container-wrapper">
+      <div class="chat-label" onclick="abrirAgendar()">Agenda tu cita aquí 👉</div> 
+      <div class="chat-icon" id="chatIcon" onclick="abrirChat()">💬</div>
+  </div>
 
   <div class="chat-overlay" id="chatOverlay" onclick="cerrarChat(event)">
     <div class="chat-container" onclick="event.stopPropagation()">
@@ -574,7 +673,7 @@
   </div>
 
   <script>
-    // --- LÓGICA DEL TAROT (Mantenida) ---
+    // --- LÓGICA DEL TAROT ---
     const tarotDeck = [
         { name: "0. El Loco", meaning: "Nuevos comienzos, aventura, fe ciega.", concept: "el nuevo comienzo" },
         { name: "I. El Mago", meaning: "Habilidad, acción, conciencia, creatividad.", concept: "la habilidad" },
@@ -602,49 +701,115 @@
 
     let drawnCards = [];
     let flippedCount = 0;
+    
+    // --- LÓGICA DE RESTRICCIÓN DEL TAROT ---
+    const readingIntervalDays = 30;
+    const readingIntervalMs = readingIntervalDays * 24 * 60 * 60 * 1000;
+    const localStorageKey = 'tarotLastReadingTime';
 
+    /**
+     * Revisa el Local Storage. 
+     * @returns {string|boolean} Retorna la fecha de la próxima tirada si está restringido, o False si no lo está.
+     */
+    function checkReadingRestriction() {
+        const lastReadingTime = localStorage.getItem(localStorageKey);
+        const now = new Date().getTime();
+
+        if (lastReadingTime) {
+            const timeDifference = now - parseInt(lastReadingTime);
+
+            if (timeDifference < readingIntervalMs) {
+                // La restricción está activa
+                const nextAllowedTime = new Date(parseInt(lastReadingTime) + readingIntervalMs);
+                // Formatear la fecha para el mensaje
+                const nextDateFormatted = nextAllowedTime.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+                return nextDateFormatted; 
+            }
+        }
+        return false; 
+    }
+
+    /**
+     * Muestra el modal de restricción.
+     */
+    function showTarotRestrictionModal(nextDateFormatted) {
+        const modal = document.getElementById('tarotModal');
+        const nextReadingSpan = document.getElementById('nextReadingDate');
+        
+        // Coloca la fecha formateada en el modal
+        nextReadingSpan.textContent = nextDateFormatted;
+        
+        modal.style.display = 'flex';
+    }
+
+    /**
+     * Cierra el modal de restricción.
+     */
+    function closeTarotRestrictionModal(event) {
+        if (event && event.target.className === 'modal-overlay') {
+            document.getElementById('tarotModal').style.display = 'none';
+        }
+        // Se llama también desde el botón "Agendar Cita" si es necesario (el botón llama a abrirAgendar())
+        if (!event) { 
+             document.getElementById('tarotModal').style.display = 'none';
+        }
+    }
+
+
+    /**
+     * Lógica principal para barajar las cartas. Chequea la restricción primero.
+     */
     function shuffleAndDrawCards() {
-        // 1. Resetear la interfaz y la clase ready-to-flip
+        const nextDate = checkReadingRestriction();
+        const drawButton = document.getElementById('drawButton');
+
+        if (nextDate) {
+            // Caso 1: Restringido. Muestra modal y sale.
+            showTarotRestrictionModal(nextDate);
+            return;
+        }
+        
+        // Caso 2: No restringido. Procede.
+        
+        // A. Guardar la marca de tiempo y bloquear la posibilidad de un nuevo barajado por 30 días.
+        localStorage.setItem(localStorageKey, new Date().getTime());
+        drawButton.textContent = 'Revela las Cartas (Uso único)';
+        // Se mantiene el onclick para que al intentar re-barajar muestre el modal.
+
+        // B. Resetear la interfaz
         const cards = document.querySelectorAll('.card');
         cards.forEach(card => {
             card.classList.remove('flipped');
-            card.classList.remove('ready-to-flip'); // <-- Se elimina el estilo LILA
+            card.classList.remove('ready-to-flip');
             card.querySelector('.card-front').innerHTML = '';
-            // Restablecer el contenido del dorso y el estilo inicial GRIS
             card.querySelector('.card-back').innerHTML = 'TAROT'; 
         });
         document.getElementById('readingResult').style.display = 'none';
         document.getElementById('readingResult').innerHTML = '';
-        document.getElementById('drawButton').disabled = true; 
         flippedCount = 0;
-        document.getElementById('drawButton').textContent = 'Barajando...'; // Feedback
 
-        // 2. Barajar y obtener 3 cartas (sin reemplazo)
+        // C. Barajar y obtener 3 cartas (sin reemplazo)
         const shuffledDeck = [...tarotDeck].sort(() => 0.5 - Math.random());
         drawnCards = shuffledDeck.slice(0, 3);
 
-        // 3. Aplicar estilo "listo" (LILA) y el mensaje después del barajado
+        // D. Aplicar estilo "listo" después del barajado
         setTimeout(() => {
-            document.getElementById('drawButton').textContent = 'Haz clic en las cartas para revelarlas';
-            document.getElementById('drawButton').disabled = false; 
-            
             // Añadir clase y mensaje a las cartas
             cards.forEach(card => {
-                card.classList.add('ready-to-flip'); // <-- Aplica color LILA
-                card.querySelector('.card-back').innerHTML = 'Clic aquí para voltear la carta'; // <-- Mensaje
+                card.classList.add('ready-to-flip');
+                card.querySelector('.card-back').innerHTML = 'Clic aquí para voltear la carta';
             });
-
         }, 500);
     }
 
     function flipCard(index) {
-        // Permitir voltear si hay cartas sorteadas y no se han volteado todas
+        // Permitir voltear si no se ha superado el conteo de 3 y la carta está lista
         if (!document.getElementById(`card${index}`).classList.contains('ready-to-flip') || flippedCount >= 3) return; 
 
         const cardElement = document.getElementById(`card${index}`);
         if (cardElement.classList.contains('flipped')) return;
 
-        const cardData = drawnCards[index - 1]; // Obtener la carta correspondiente (0, 1, o 2)
+        const cardData = drawnCards[index - 1]; 
 
         // 1. Rellenar el contenido frontal de la carta 
         const frontElement = document.getElementById(`front${index}`);
@@ -673,20 +838,16 @@
     function generateReadingSummary(cards) {
         const [pastCard, presentCard, futureCard] = cards;
         
-        // Se extraen los conceptos principales con el artículo (el/la)
         const pastConcept = pastCard.concept;
         const presentConcept = presentCard.concept;
         const futureConcept = futureCard.concept;
 
         let summary = `<h3>✨ Interpretación de tu Tirada de 3 Cartas ✨</h3>`;
         
-        // 1. ANÁLISIS DEL PASADO
         summary += `<p>El **Pasado** (***${pastCard.name}***) revela que tu situación actual tiene sus raíces en **${pastConcept}** y la energía de ${pastCard.meaning.toLowerCase().split(',')[0].trim()}. Es la base que te trajo hasta aquí.</p>`;
         
-        // 2. ANÁLISIS DEL PRESENTE
         summary += `<p>El **Presente** (***${presentCard.name}***) te está pidiendo un enfoque claro en **${presentConcept}**. Es la carta de acción que define tu próximo paso. Debes manifestar ${presentCard.meaning.toLowerCase().split(',')[0].trim()} en este momento.</p>`;
         
-        // 3. ANÁLISIS DEL FUTURO
         summary += `<p>El **Futuro** (***${futureCard.name}***) es la promesa de lo que está por llegar. Si mantienes el enfoque en el Presente, te dirigirás hacia **${futureConcept}** y una potencial ${futureCard.meaning.toLowerCase().split(',')[0].trim()}.</p>`;
         
         return summary;
@@ -695,11 +856,10 @@
     function showReadingResult() {
         const resultDiv = document.getElementById('readingResult');
         
-        // 1. Generar la interpretación resumida (Pasado, Presente, Futuro)
         const summaryHTML = generateReadingSummary(drawnCards);
         resultDiv.innerHTML = summaryHTML; 
         
-        // 2. Agregar CTA (Llamada a la Acción) con el texto solicitado
+        // Agregar CTA (Llamada a la Acción) con el texto solicitado
         resultDiv.innerHTML += `
             <hr style="border-top: 1px solid #e0b3ff; margin: 15px 0;">
             <p style="text-align: center; margin-bottom: 15px;">
@@ -710,13 +870,10 @@
             </button>
         `;
 
-        // 3. Mostrar resultados
+        // Mostrar resultados
         resultDiv.style.display = 'block';
 
-        // 4. Resetear el botón
-        document.getElementById('drawButton').textContent = 'Barajar de Nuevo';
-        document.getElementById('drawButton').disabled = false;
-        document.getElementById('drawButton').onclick = shuffleAndDrawCards; 
+        // NO se toca el botón de "Barajar de Nuevo" ya que ahora está bloqueado por 30 días.
     }
 
     // --- LÓGICA DEL CHAT (Mantenida) ---
@@ -728,7 +885,6 @@
     const dropdownMenu = document.getElementById('dropdownMenu'); 
 
     let pasoAgendar = 0;
-    // Se inicializa tipoCita con el nombre de la sesión única
     let datosCliente = { nombre: "", apellido: "", tipoCita: "Sesión Integral de Equilibrio Vibracional ($50)", pais: "", prefijo: "", telefono: "", mensaje: "" };
 
     const paises = {
@@ -742,48 +898,54 @@
       "Ecuador": "+593",
       "Estados Unidos": "+1"
     };
+    
+    const numeroDestino = "17542486274";
 
     function abrirChat() {
+      // Cierra el modal de Tarot si estaba abierto
+      closeTarotRestrictionModal();
+      
       chatOverlay.style.display = "flex";
-      chatIcon.style.display = "none"; 
+      document.querySelector('.chat-container-wrapper').style.display = "none";
       if (!chatMessages.hasChildNodes()) {
         mostrarMensaje("bot", "¡Hola! Bienvenido/a, soy el asistente virtual de Isabel Ramirez. ¿Sobre qué te gustaría hablar hoy?");
         mostrarOpciones();
       }
-      // Oculta el menú si estaba abierto al abrir el chat
       dropdownMenu.style.display = 'none'; 
     }
 
     function abrirAgendar() {
+      // Cierra el modal de Tarot si estaba abierto
+      closeTarotRestrictionModal();
+      
       abrirChat();
-      // Si el chat ya está abierto, iniciamos el flujo de agendar
+      if (chatMessages.hasChildNodes()) {
+        mostrarMensaje("user", "📅 Agendar una cita");
+      }
       manejarOpcion("agendar"); 
     }
 
     function cerrarChat(event) {
       if (event && event.target === chatOverlay) {
         chatOverlay.style.display = "none";
-        chatIcon.style.display = "flex"; 
+        document.querySelector('.chat-container-wrapper').style.display = "flex"; 
       } else if (!event || event.target.className === 'close-btn') {
         chatOverlay.style.display = "none";
-        chatIcon.style.display = "flex"; 
+        document.querySelector('.chat-container-wrapper').style.display = "flex"; 
       }
       
       if (!event) {
           chatOverlay.style.display = "none";
-          chatIcon.style.display = "flex";
+          document.querySelector('.chat-container-wrapper').style.display = "flex";
       }
-      // Asegurarse de que el menú se oculte al cerrar el chat
       dropdownMenu.style.display = 'none';
     }
     
-    // Función para mostrar/ocultar el menú
     function toggleDropdown(event) {
-        event.stopPropagation(); // Evita que el clic se propague al chat-overlay
+        event.stopPropagation(); 
         dropdownMenu.style.display = (dropdownMenu.style.display === 'block') ? 'none' : 'block';
     }
     
-    // Función para eliminar el historial 
     function clearChatHistory(event) {
         event.preventDefault(); 
         event.stopPropagation(); 
@@ -799,19 +961,18 @@
     function mostrarMensaje(remitente, texto) {
       const msg = document.createElement('div');
       msg.classList.add('message', remitente);
-      msg.innerHTML = texto; // Usar innerHTML para el texto con formato
+      msg.innerHTML = texto; 
       chatMessages.appendChild(msg);
       chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
     function mostrarOpciones() {
-      // ARRAY DE OPCIONES ACTUALIZADO CON EL NUEVO ORDEN
       const opciones = [
         { text: "🔮 Hablar sobre el Tarot", action: "tarot" },
         { text: "✨ Terapias con cristales", action: "terapias" },
         { text: "📿 Lectura del péndulo", action: "pendulo" },
-        { text: "💎 Precios de las sesiones", action: "precios" }, // Penúltima
-        { text: "📅 Agendar una cita", action: "agendar" }         // Última
+        { text: "💎 Precios de las sesiones", action: "precios" },
+        { text: "📅 Agendar una cita", action: "agendar" }        
       ];
       opciones.forEach(op => {
         const btn = document.createElement('div');
@@ -823,20 +984,17 @@
       chatMessages.scrollTop = chatMessages.scrollHeight;
     }
     
-    // FUNCIÓN: Muestra botones SÍ/NO y maneja la transición
     function askYesNoQuestion(action) {
-        // Create Yes button
         const btnYes = document.createElement('div');
         btnYes.classList.add('option');
         btnYes.textContent = "✅ Sí, agendar cita";
         btnYes.onclick = () => {
             mostrarMensaje("user", "Sí");
-            pasoAgendar = 1; // Transición al primer paso de agendamiento
+            pasoAgendar = 1; 
             mostrarMensaje("bot", "Excelente ✨ Vamos a agendar. ¿Cuál es tu **nombre**?");
         };
         chatMessages.appendChild(btnYes);
 
-        // Create No button
         const btnNo = document.createElement('div');
         btnNo.classList.add('option');
         btnNo.textContent = "❌ No, gracias";
@@ -856,13 +1014,12 @@
             btnSalir.onclick = () => { mostrarMensaje("user", "Salir"); cerrarChat(); }; 
             chatMessages.appendChild(btnSalir);
             
-            pasoAgendar = "fin"; // Detiene la interpretación de texto
+            pasoAgendar = "fin"; 
         };
         chatMessages.appendChild(btnNo);
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
     
-    // FUNCIÓN: Muestra botones de País
     function mostrarOpcionesPais() {
         Object.keys(paises).forEach(p => {
             const btn = document.createElement('div');
@@ -872,7 +1029,7 @@
             chatMessages.appendChild(btn);
         });
         chatMessages.scrollTop = chatMessages.scrollHeight;
-        pasoAgendar = -1; // Esperando la selección de País (botón)
+        pasoAgendar = -1; 
     }
 
     function seleccionarPais(p) {
@@ -883,9 +1040,6 @@
         pasoAgendar = 3; 
     }
 
-    /**
-     * FUNCIÓN NUEVA: Muestra el resumen y el precio antes de enviar a WhatsApp.
-     */
     function mostrarConfirmacionFinal() {
         const confirmMessage = `
             <h3>✅ Confirmación de Cita</h3>
@@ -912,7 +1066,6 @@
         
         mostrarMensaje("bot", confirmMessage);
         
-        // Botón final de WhatsApp
         const btnFinal = document.createElement('div');
         btnFinal.classList.add('option');
         btnFinal.textContent = "📲 Agendar Cita y Enviar por WhatsApp";
@@ -921,18 +1074,12 @@
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
     
-    /**
-     * FUNCIÓN NUEVA: Lógica para generar y abrir la URL de WhatsApp.
-     */
     function enviarCitaWhatsApp() {
-        // Mensaje de WhatsApp con el Tipo de Cita UNIFICADO
-        const numeroDestino = "584142078502";
         const texto = `Hola, quiero agendar una cita.\nTipo de Cita: ${datosCliente.tipoCita}\nNombre: ${datosCliente.nombre} ${datosCliente.apellido}\nPaís: ${datosCliente.pais}\nTeléfono: ${datosCliente.prefijo}${datosCliente.telefono}\nMensaje: ${datosCliente.mensaje}`;
         const url = `https://wa.me/${numeroDestino}?text=${encodeURIComponent(texto)}`;
         
         window.open(url, "_blank"); 
         
-        // Mostrar opciones finales después de abrir WhatsApp
         setTimeout(() => {
             mostrarMensaje("bot", "Cita enviada a WhatsApp. ¿Quieres volver al inicio o salir?");
             const btnInicio = document.createElement('div');
@@ -976,14 +1123,13 @@ Esta experiencia holística tiene un **costo total de 50$**.`);
         pasoAgendar = 1;
         mostrarMensaje("bot", "Perfecto ✨ Empecemos tu cita. ¿Cuál es tu **nombre**?");
       }
-      dropdownMenu.style.display = 'none'; // Asegura que el menú se oculte al interactuar con las opciones
+      dropdownMenu.style.display = 'none'; 
     }
 
     function sendMessage() {
       const msg = userInput.value.trim();
       if (!msg) return;
       
-      // Bloquea la entrada de texto si está esperando una selección de botón (País)
       if (pasoAgendar === -1) {
           mostrarMensaje("bot", "Por favor, selecciona tu país de la lista de opciones para continuar.");
           userInput.value = '';
@@ -991,10 +1137,8 @@ Esta experiencia holística tiene un **costo total de 50$**.`);
       }
       
       mostrarMensaje("user", msg);
-      // Oculta el menú si el usuario escribe un mensaje
       dropdownMenu.style.display = 'none'; 
 
-      // ******* Lógica del Agendamiento (Pasos 1-4) *******
       if (pasoAgendar > 0) {
         if (pasoAgendar === 1) {
           datosCliente.nombre = msg;
@@ -1002,11 +1146,9 @@ Esta experiencia holística tiene un **costo total de 50$**.`);
           pasoAgendar = 2;
         } else if (pasoAgendar === 2) {
           datosCliente.apellido = msg;
-          
-          // Se pasa directo al país.
           mostrarMensaje("bot", "Excelente. ¿De qué país escribes? (Por favor, selecciona una opción)");
           mostrarOpcionesPais();
-          pasoAgendar = -1; // Esperando la selección de País (botón)
+          pasoAgendar = -1; 
           
         } else if (pasoAgendar === 3) {
           datosCliente.telefono = msg;
@@ -1015,16 +1157,14 @@ Esta experiencia holística tiene un **costo total de 50$**.`);
         } else if (pasoAgendar === 4) {
           datosCliente.mensaje = msg;
           
-          // MOSTRAR CONFIRMACIÓN FINAL CON PRECIO Y BOTÓN DE WHATSAPP
           mostrarConfirmacionFinal();
           
-          pasoAgendar = "fin"; // Detener el flujo de agendamiento por texto
+          pasoAgendar = "fin"; 
         }
       } else {
-          // Respuesta por defecto si no está en un flujo de agendamiento activo (pasoAgendar <= 0)
           mostrarMensaje("bot", "No tengo una respuesta específica para eso. ¿Te gustaría ver las **opciones principales** o **agendar una cita**?");
           mostrarOpciones();
-          pasoAgendar = 0; // Reinicia el flujo
+          pasoAgendar = 0; 
       }
       userInput.value = '';
     }
@@ -1033,7 +1173,6 @@ Esta experiencia holística tiene un **costo total de 50$**.`);
       if (e.key === "Enter") sendMessage();
     });
     
-    // Función para ocultar el menú desplegable si el usuario hace clic fuera de él
     document.addEventListener('click', function(event) {
         const menuDropdown = document.querySelector('.menu-dropdown');
         const isClickInside = menuDropdown.contains(event.target) || dropdownMenu.contains(event.target);
@@ -1042,6 +1181,7 @@ Esta experiencia holística tiene un **costo total de 50$**.`);
             dropdownMenu.style.display = 'none';
         }
     });
+
   </script>
 </body>
 </html>
