@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tarot y Energías - Equilibrio Vibracional</title>
+  <title>Tarot y Energías</title>
   <style>
-    /* -------------------------- ESTILOS BASE -------------------------- */
     body {
       margin: 0;
       font-family: 'Arial', sans-serif;
@@ -20,12 +19,10 @@
     header {
       text-align: center;
       padding: 1.5rem;
-      width: 100%;
-      max-width: 350px;
-      box-sizing: border-box;
     }
 
     header img {
+      /* Ajuste de tamaño de la imagen */
       width: 150px;
       height: 150px;
       border-radius: 50%;
@@ -40,83 +37,28 @@
     }
 
     header p {
+      /* AUMENTO DE TAMAÑO DE LETRA GENERAL */
       font-size: 1rem; 
       color: #ddd;
       max-width: 330px;
       margin: auto;
       line-height: 1.5rem;
     }
-    
-    /* -------------------------- ADVERTENCIA TIKTOK -------------------------- */
-    .tiktok-warning {
-        background: #ff4d4d; 
-        color: white; 
-        padding: 15px; 
-        margin: -10px auto 10px auto; 
-        border-radius: 8px; 
-        font-weight: bold; 
-        text-align: center; 
-        border: 3px solid #ff0000; 
-        max-width: 350px;
-        font-size: 0.9rem;
-    }
 
-    /* -------------------------- SECCIÓN DE VIDEO Y CTA -------------------------- */
-    .scroll-hint {
-        margin-bottom: 1rem;
-        font-size: 1.1rem;
-        font-weight: bold;
-        color: #e0b3ff;
-        text-shadow: 0 0 5px #8338ec;
-        animation: bounce 2s infinite;
-    }
-
-    @keyframes bounce {
-        0%, 20%, 50%, 80%, 100% { transform: translateY(0); opacity: 1; }
-        40% { transform: translateY(-5px); opacity: 0.8; }
-        60% { transform: translateY(-3px); opacity: 0.9; }
-    }
-
-    .video-container {
-      margin-top: 2rem;
-      padding: 0 1rem;
-      max-width: 350px;
-      width: 100%;
-      box-sizing: border-box;
+    main {
       text-align: center;
+      padding: 1rem;
+      max-width: 350px;
+      /* Se mantiene la sección main aunque sin contenido de botones */
     }
 
-    .video-wrapper {
-      position: relative;
-      padding-bottom: 177.77%; /* Aspect ratio 9:16 */
-      height: 0;
-      overflow: hidden;
-      border-radius: 10px;
-      box-shadow: 0 0 15px #a855f7;
-    }
-
-    .video-wrapper iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
-    
-    .cta-video-footer {
-        text-align: center; 
-        margin-top: 1.5rem; 
-        padding: 15px; 
-        background: #18002a; 
-        border-radius: 10px; 
-        border: 1px solid #8338ec;
-        margin-bottom: 80px; /* Espacio para el botón flotante */
+    .buttons {
+        /* ESTE BLOQUE AHORA ESTÁ VACÍO O SE USA SÓLO EN EL CTA DEL TAROT */
+        display: none; 
     }
 
     .btn {
-      width: 100%; 
-      display: block; 
-      box-sizing: border-box;
+      flex: 1;
       padding: 0.8rem;
       border: none;
       border-radius: 30px;
@@ -130,18 +72,45 @@
     .btn:hover {
       background: #a855f7;
     }
+    
+    /* --- INICIO: ESTILOS PARA EL INDICADOR DE DESLIZAMIENTO --- */
+    .scroll-hint {
+        margin-bottom: 1rem; /* Separación de la imagen */
+        font-size: 1.1rem;
+        font-weight: bold;
+        color: #e0b3ff; /* Color lila */
+        text-shadow: 0 0 5px #8338ec;
+        animation: bounce 2s infinite; /* Aplicar animación */
+    }
 
-    /* -------------------------- BOTÓN FLOTANTE -------------------------- */
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        40% {
+            transform: translateY(-5px);
+            opacity: 0.8;
+        }
+        60% {
+            transform: translateY(-3px);
+            opacity: 0.9;
+        }
+    }
+    /* --- FIN: ESTILOS PARA EL INDICADOR DE DESLIZAMIENTO --- */
+
+    /* INICIO: ESTILOS PARA EL BOTÓN FLOTANTE Y SU LEYENDA */
     .chat-container-wrapper {
         position: fixed;
-        bottom: 20px; /* Se ajusta para evitar el solapamiento con la barra inferior de TikTok */
+        bottom: 70px;
         right: 20px;
         z-index: 1000;
-        display: flex;
+        display: flex; /* Para alinear el botón y el texto */
         align-items: center;
     }
 
     .chat-icon {
+      /* Mantenido el estilo original del botón */
       width: 60px;
       height: 60px;
       border-radius: 50%;
@@ -153,40 +122,281 @@
       font-size: 1.5rem;
       cursor: pointer;
       animation: pulse 1.5s infinite;
-      box-shadow: 0 0 5px #a855f7;
+      /* Se quitan las propiedades de posicionamiento fijo para usar el contenedor */
     }
+
+    /* Nuevo estilo para el globo de texto flotante */
+    .chat-label {
+        background-color: #a855f7; /* Lila más brillante */
+        color: white;
+        padding: 8px 12px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: bold;
+        white-space: nowrap; /* Evita que el texto se rompa */
+        margin-right: 10px; /* Separación del icono */
+        box-shadow: 0 0 10px rgba(168, 85, 247, 0.7);
+        position: relative;
+        cursor: pointer; /* Añadir cursor para indicar que es interactivo */
+    }
+    /* FIN: ESTILOS PARA EL BOTÓN FLOTANTE Y SU LEYENDA */
 
     @keyframes pulse {
       0% { box-shadow: 0 0 5px #a855f7; }
       50% { box-shadow: 0 0 20px #a855f7; }
       100% { box-shadow: 0 0 5px #a855f7; }
     }
-
-    .chat-label {
-        background-color: #a855f7;
-        color: white;
-        padding: 8px 12px;
-        border-radius: 20px;
-        font-size: 0.9rem;
-        font-weight: bold;
-        white-space: nowrap;
-        margin-right: 10px;
-        box-shadow: 0 0 10px rgba(168, 85, 247, 0.7);
-        cursor: pointer;
+    
+    /* New styles for responsive video (9:16 aspect ratio) */
+    .video-container {
+      margin-top: 2rem;
+      padding: 0 1rem;
+      max-width: 350px; /* Adjusted max-width for a vertical video */
+      width: 100%;
+      box-sizing: border-box;
+      text-align: center;
     }
 
-    /* -------------------------- ESTILOS DEL CHAT (MODAL) -------------------------- */
+    .video-wrapper {
+      position: relative;
+      padding-bottom: 177.77%; /* 16:9 invertido, para 9:16 (9/16 = 0.5625; 1/0.5625 = 1.7777...) */
+      height: 0;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 0 15px #a855f7;
+    }
+
+    .video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* ESTILOS AÑADIDOS PARA LA LECTURA DEL TAROT */
+    .tarot-container {
+      margin: 1.5rem 0 3rem 0; /* REDUCCIÓN DE MARGEN SUPERIOR */
+      padding: 0 1rem;
+      width: 100%;
+      max-width: 400px; /* Un poco más ancho para las cartas */
+      text-align: center;
+    }
+
+    .tarot-container h2 {
+        color: #e0b3ff;
+        margin-bottom: 1.5rem;
+    }
+
+    #drawButton {
+        padding: 10px 20px;
+        background: #a855f7;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1.1rem;
+        margin-bottom: 20px;
+        transition: background 0.3s;
+    }
+
+    #drawButton:hover:not(:disabled) {
+        background: #8338ec;
+    }
+
+    #drawButton:disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
+
+    .card-slots {
+        display: flex;
+        justify-content: space-around;
+        gap: 10px;
+        min-height: 220px; /* Para mantener el espacio */
+    }
+
+    /* ESTADO INICIAL (GRIS OSCURO) */
+    .card {
+        width: 30%;
+        height: 180px;
+        border-radius: 8px;
+        background-color: #250046; /* Gris muy oscuro/púrpura (Inicial) */
+        border: 2px solid #4a4a50; /* Borde gris oscuro */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        perspective: 1000px; /* Para el efecto de volteo */
+        cursor: default;
+        transition: border 0.3s, background-color 0.3s;
+    }
+
+    /* ESTADO LISTO PARA VOLTEAR (LILA VIBRANTE) */
+    .card.ready-to-flip {
+        background-color: #370055; /* Fondo del dorso (un poco más claro) */
+        border: 2px solid #e0b3ff; /* Borde lila/púrpura */
+        cursor: pointer; 
+    }
+    
+    .card.flipped {
+        background-color: #250046; /* Color de frente de la carta */
+        border: 2px solid #8338ec;
+        cursor: default;
+        position: relative;
+    }
+    
+    .card-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 0.6s;
+        transform-style: preserve-3d;
+    }
+
+    .card.flipped .card-inner {
+        transform: rotateY(180deg); 
+    }
+
+    .card-back, .card-front {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden; 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 5px;
+        box-sizing: border-box;
+        border-radius: 6px;
+    }
+
+    /* ESTILO POR DEFECTO DEL DORSO (antes de barajar) */
+    .card-back {
+        background-color: #250046; 
+        color: #999; 
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+    
+    /* ESTILO DORSO (luego de barajar) */
+    .card.ready-to-flip .card-back {
+        background-color: #370055; 
+        color: #e0b3ff; /* Color lila para el texto */
+        font-weight: bold;
+        font-size: 0.9rem; /* Tamaño más pequeño para el texto de instrucción */
+        padding: 10px;
+        line-height: 1.4;
+    }
+
+    .card-front {
+        background-color: #250046;
+        color: #e0b3ff;
+        transform: rotateY(180deg); 
+        font-size: 0.9rem;
+    }
+
+    .card-front strong {
+        font-size: 1.1rem;
+        color: #fff;
+        margin-bottom: 5px;
+    }
+
+    .card-front .meaning {
+        font-size: 0.75rem;
+        margin-top: 5px;
+        color: #ddd;
+    }
+
+    #readingResult {
+        margin-top: 1.5rem;
+        padding: 15px;
+        border: 1px solid #8338ec;
+        border-radius: 10px;
+        text-align: left;
+        display: none;
+        background: #18002a;
+        font-size: 0.95rem;
+    }
+    
+    #readingResult h3, #readingResult h4 {
+        color: #e0b3ff;
+        text-align: center;
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    #readingResult p {
+        margin-top: 0.8rem;
+        line-height: 1.4;
+    }
+    /* FIN ESTILOS AÑADIDOS TAROT */
+
+    /* INICIO: ESTILOS DEL MODAL DE RESTRICCIÓN */
+    .modal-overlay {
+        display: none; /* Oculto por defecto */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 2000; /* Asegurar que esté por encima de todo */
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background: #1e0033;
+        padding: 30px;
+        border-radius: 10px;
+        border: 2px solid #a855f7;
+        max-width: 90%;
+        width: 350px;
+        box-shadow: 0 5px 15px rgba(168, 85, 247, 0.5);
+        text-align: center;
+    }
+    
+    .modal-content h3 {
+        color: #e0b3ff;
+        margin-top: 0;
+        margin-bottom: 15px;
+    }
+    
+    .modal-content .next-date {
+        display: block;
+        font-size: 1.1rem;
+        font-weight: bold;
+        color: #ffcc00; /* Amarillo para resaltar la fecha */
+        margin: 10px 0;
+    }
+
+    .modal-content button {
+        background: #8338ec;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 20px;
+    }
+    /* FIN: ESTILOS DEL MODAL DE RESTRICCIÓN */
+
+    /* ---------------------------------------------------------------------- */
+    /* ESTILOS DE CHAT (Mantenidos) */
+    /* ---------------------------------------------------------------------- */
     .chat-overlay {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: rgba(0,0,0,0.7); 
+      background: rgba(0,0,0,0.5); 
       display: none;
-      justify-content: center; 
-      align-items: center; 
+      justify-content: flex-end; 
+      align-items: flex-end; 
       padding: 20px; 
       box-sizing: border-box;
-      z-index: 9999;
+      z-index: 999;
     }
 
     .chat-container {
@@ -199,6 +409,7 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      z-index: 1000;
     }
 
     .chat-header {
@@ -211,6 +422,46 @@
       font-size: 1.1rem;
     }
     
+    /* ESTILOS DEL MENÚ DESPLEGABLE */
+    .menu-dropdown {
+        position: absolute;
+        left: 15px; 
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        font-size: 1.2rem;
+        padding: 5px;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 40px; 
+        left: 0;
+        background-color: #370055;
+        min-width: 180px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+        z-index: 1;
+        border-radius: 5px;
+        text-align: left;
+    }
+
+    .dropdown-content a {
+        color: white;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        font-weight: normal;
+        font-size: 1rem;
+        transition: background-color 0.2s;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #8338ec;
+    }
+    
+    /* FIN ESTILOS MENÚ DESPLEGABLE */
+
     .chat-header .close-btn {
       position: absolute;
       right: 15px;
@@ -218,19 +469,6 @@
       cursor: pointer;
       font-weight: bold;
       font-size: 1.4rem; 
-    }
-    
-    .menu-dropdown {
-        position: absolute; left: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 1.2rem; padding: 5px;
-    }
-    .dropdown-content {
-        display: none; position: absolute; top: 40px; left: 0; background-color: #370055; min-width: 180px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5); z-index: 1; border-radius: 5px; text-align: left;
-    }
-    .dropdown-content a {
-        color: white; padding: 12px 16px; text-decoration: none; display: block; font-weight: normal; font-size: 1rem; transition: background-color 0.2s;
-    }
-    .dropdown-content a:hover {
-        background-color: #a855f7;
     }
 
     .chat-messages {
@@ -240,7 +478,31 @@
       font-size: 1.05rem; 
       display: flex;
       flex-direction: column;
-      padding-bottom: 20px;
+    }
+
+    .chat-input {
+      display: flex;
+      border-top: 1px solid #8338ec;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 14px;
+      border: none;
+      outline: none;
+      font-size: 1.05rem; 
+      background: #250046;
+      color: white;
+    }
+
+    .chat-input button {
+      background: #8338ec;
+      border: none;
+      padding: 14px 22px; 
+      cursor: pointer;
+      color: white;
+      font-weight: bold;
+      font-size: 1.3rem;
     }
 
     .message {
@@ -251,13 +513,18 @@
       word-wrap: break-word;
     }
 
+    .user {
+      align-self: flex-end;
+      background: #a855f7;
+      color: white;
+    }
+
     .bot {
       align-self: flex-start;
       background: #370055;
       color: #e0b3ff;
     }
-    
-    /* Estilo del botón de opción dentro del chat */
+
     .option {
       background: #8338ec;
       color: white;
@@ -266,41 +533,46 @@
       margin: 6px 0; 
       cursor: pointer;
       font-size: 1rem; 
-      display: block;
-      text-align: center; 
-      width: 100%;
-      box-sizing: border-box;
-      transition: background 0.2s;
-    }
-    .option:hover {
-        background: #a855f7;
-    }
-    
-    .option.whatsapp-final {
-        margin-top: 15px;
-        font-weight: bold;
-        background: #25D366; /* Color de WhatsApp */
-    }
-    .option.whatsapp-final:hover {
-        background: #1DA851;
+      display: inline-block;
+      text-align: center; /* Centrar el texto en los botones */
     }
 
-    /* -------------------------- MEDIA QUERY (MÓVIL) -------------------------- */
+    /* ---------------------------------------------------------------------- */
+    /* MEDIA QUERY (VISTA MÓVIL)                                            */
+    /* ---------------------------------------------------------------------- */
     @media (max-width: 480px) {
-      .chat-container-wrapper { bottom: 20px; right: 10px; }
-      .chat-label { margin-right: 5px; font-size: 0.8rem; padding: 6px 10px; }
-      .chat-overlay { padding: 0; justify-content: center; align-items: center; }
-      .chat-container { width: 100%; height: 100%; max-height: 100%; border-radius: 0; margin: 0; }
-      .chat-messages { padding-bottom: 70px; }
+      .chat-container-wrapper {
+          bottom: 20px; /* Bajar un poco para dejar espacio en móviles */
+      }
+      .chat-label {
+          margin-right: 5px;
+          font-size: 0.8rem;
+          padding: 6px 10px;
+      }
+      .chat-overlay {
+        padding: 0; 
+        justify-content: center;
+        align-items: center;
+      }
+      
+      .chat-container {
+        width: 100%; 
+        height: 100%; 
+        max-height: 100%;
+        border-radius: 0; 
+        margin: 0;
+      }
+      
+      .chat-messages {
+        max-height: calc(100vh - 120px); 
+      }
     }
   </style>
 </head>
 <body>
   <header>
-    <div id="tiktok-warning-container"></div> 
-
     <div class="scroll-hint">
-        👇 DESLIZA HASTA ABAJO PARA VER EL VIDEO Y SOLICITAR TU CONSULTA 👇
+        👇 DESLIZA HASTA ABAJO PARA VER EL TAROT GRATUITO 👇
     </div>
     <img src="https://github.com/isabelramirez28092025-byte/tarot/blob/main/WhatsApp%20Image%202025-09-28%20at%201.00.07%20PM.jpeg?raw=true" alt="Perfil Tarot">
     <h1>EQUILIBRIO VIBRACIONAL CON CRISTALES DE CUARZO Y PENDULO</h1>
@@ -313,6 +585,30 @@
     </p>
   </header>
 
+  <main>
+    <div class="buttons">
+    </div>
+  </main>
+
+  <section class="tarot-container">
+    <h2>🔮 Tu Tirada de Tarot Gratuita</h2>
+    <p>Concéntrate en tu pregunta y presiona **"Barajar y Elegir"** para obtener tu lectura de 3 cartas (Pasado, Presente, Futuro).</p>
+    <button id="drawButton" onclick="shuffleAndDrawCards()">Barajar y Elegir Cartas</button>
+    
+    <div class="card-slots" id="cardSlots">
+      <div class="card" id="card1" onclick="flipCard(1)">
+        <div class="card-inner"><div class="card-back">TAROT</div><div class="card-front" id="front1"></div></div>
+      </div>
+      <div class="card" id="card2" onclick="flipCard(2)">
+        <div class="card-inner"><div class="card-back">TAROT</div><div class="card-front" id="front2"></div></div>
+      </div>
+      <div class="card" id="card3" onclick="flipCard(3)">
+        <div class="card-inner"><div class="card-back">TAROT</div><div class="card-front" id="front3"></div></div>
+      </div>
+    </div>
+    
+    <div id="readingResult"></div>
+  </section>
   <section class="video-container">
     <h2>Video Destacado</h2>
     <div class="video-wrapper">
@@ -325,25 +621,37 @@
       ></iframe>
     </div>
     
-    <div class="cta-video-footer">
+    <div class="cta-video-footer" style="text-align: center; margin-top: 1.5rem; padding: 15px; background: #18002a; border-radius: 10px; border: 1px solid #8338ec;">
         <p style="color: #e0b3ff; margin-bottom: 1rem; font-size: 1rem; font-weight: bold;">
             ¿Sientes la llamada? Da el primer paso hacia tu **Equilibrio Vibracional** total.
         </p>
-        <button 
-          class="btn" 
-          onclick="mostrarDetalleDeCita()"
-        >
+        <button class="btn" style="width: 100%; display: block; box-sizing: border-box;" onclick="abrirAgendar()">
             Solicita tu consulta aquí 👇
         </button>
     </div>
     </section>
 
+  <div id="tarotModal" class="modal-overlay" onclick="closeTarotRestrictionModal(event)">
+      <div class="modal-content" onclick="event.stopPropagation()">
+          <h3>🛑 Restricción de Consulta Energética</h3>
+          <p>
+              Disculpa, pero solo puedes consultar el Tarot en la modalidad gratuita **una vez cada 30 días**.
+          </p>
+          <p style="font-size: 0.95rem;">
+              Esto es esencial para respetar los **flujos de energía**. Consultar repetidamente sobre la misma situación en un corto período de tiempo puede generar **confusión e inestabilidad** en tu guía.
+          </p>
+          <p>Podrás realizar una nueva tirada el:</p>
+          <span class="next-date" id="nextReadingDate"></span>
+          <p>Si necesitas una guía inmediata y personalizada, te invito a **agendar una cita** con Isabel:</p>
+          <button onclick="abrirAgendar()">📅 Agendar Cita con Isabel</button>
+      </div>
+  </div>
   <div class="chat-container-wrapper">
-      <div class="chat-label" onclick="mostrarDetalleDeCita()">Agenda tu cita aquí 👉</div> 
-      <div class="chat-icon" id="chatIcon" onclick="abrirChatAsistente()">💬</div>
+      <div class="chat-label" onclick="abrirAgendar()">Agenda tu cita aquí 👉</div> 
+      <div class="chat-icon" id="chatIcon" onclick="abrirChat()">💬</div>
   </div>
 
-  <div class="chat-overlay" id="chatOverlay" onclick="cerrarChatAsistente(event)">
+  <div class="chat-overlay" id="chatOverlay" onclick="cerrarChat(event)">
     <div class="chat-container" onclick="event.stopPropagation()">
       <div class="chat-header">
         
@@ -354,59 +662,281 @@
             </div>
         </div>
         🔮 Tarot Asistente
-        <span class="close-btn" onclick="cerrarChatAsistente()">✖</span>
+        <span class="close-btn" onclick="cerrarChat()">✖</span>
       </div>
       <div class="chat-messages" id="chatMessages"></div>
-      <div class="chat-input" style="display: none;"></div>
+      <div class="chat-input">
+        <input type="text" id="userInput" placeholder="Escribe tu mensaje...">
+        <button onclick="sendMessage()">➤</button>
+      </div>
     </div>
   </div>
 
   <script>
-    // -------------------------- CONFIGURACIÓN DE WHATSAPP --------------------------
-    const phoneNumber = "17542486274"; // Número sin signos ni el '+' inicial
-    const messageTemplate = "Hola Isabel, Me gustaría agendar una cita para la Sesión Integral de Equilibrio Vibracional ($50). Quedo atento(a) a tu disponibilidad y al proceso para reservar. ¡Gracias!";
+    // --- LÓGICA DEL TAROT ---
+    const tarotDeck = [
+        { name: "0. El Loco", meaning: "Nuevos comienzos, aventura, fe ciega.", concept: "el nuevo comienzo" },
+        { name: "I. El Mago", meaning: "Habilidad, acción, conciencia, creatividad.", concept: "la habilidad" },
+        { name: "II. La Papisa", meaning: "Intuición, misterio, sabiduría oculta.", concept: "la intuición" },
+        { name: "III. La Emperatriz", meaning: "Fertilidad, abundancia, naturaleza, madre.", concept: "la fertilidad" },
+        { name: "IV. El Emperador", meaning: "Autoridad, estructura, control, padre.", concept: "la autoridad" },
+        { name: "V. El Papa", meaning: "Tradición, guía espiritual, enseñanza.", concept: "la tradición" },
+        { name: "VI. Los Enamorados", meaning: "Elección, unión, amor, valores personales.", concept: "la elección" },
+        { name: "VII. El Carro", meaning: "Victoria, voluntad, autodeterminación, viaje.", concept: "la victoria" },
+        { name: "VIII. La Justicia", meaning: "Equilibrio, verdad, legalidad, causa y efecto.", concept: "el equilibrio" },
+        { name: "IX. El Ermitaño", meaning: "Introspección, soledad, búsqueda interior, guía.", concept: "la introspección" },
+        { name: "X. La Rueda de la Fortuna", meaning: "Ciclos, destino, cambio inminente.", concept: "el cambio inminente" },
+        { name: "XI. La Fuerza", meaning: "Coraje, paciencia, influencia, compasión.", concept: "el coraje" },
+        { name: "XII. El Colgado", meaning: "Sacrificio, nueva perspectiva, dejar ir.", concept: "el sacrificio" },
+        { name: "XIII. La Muerte", meaning: "Finales, transformación, transición.", concept: "la transformación" },
+        { name: "XIV. La Templanza", meaning: "Moderación, paciencia, propósito, equilibrio.", concept: "la moderación" },
+        { name: "XV. El Diablo", meaning: "Tentación, esclavitud, materialismo.", concept: "la tentación" },
+        { name: "XVI. La Torre", meaning: "Caos, revelación súbita, destrucción de viejas formas.", concept: "el caos" },
+        { name: "XVII. La Estrella", meaning: "Esperanza, inspiración, serenidad, espiritualidad.", concept: "la esperanza" },
+        { name: "XVIII. La Luna", meaning: "Ilusión, miedo, intuición, subconsciente.", concept: "la ilusión" },
+        { name: "XIX. El Sol", meaning: "Éxito, felicidad, vitalidad, iluminación.", concept: "el éxito" },
+        { name: "XX. El Juicio", meaning: "Llamada, despertar, evaluación, renacimiento.", concept: "el despertar" },
+        { name: "XXI. El Mundo", meaning: "Completitud, logro, integración, realización.", concept: "la realización" }
+    ];
+
+    let drawnCards = [];
+    let flippedCount = 0;
     
-    // URL universal (para navegadores y fallback)
-    const whatsappLinkCompleto = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(messageTemplate)}`;
+    // --- LÓGICA DE RESTRICCIÓN DEL TAROT ---
+    const readingIntervalDays = 30;
+    const readingIntervalMs = readingIntervalDays * 24 * 60 * 60 * 1000;
+    const localStorageKey = 'tarotLastReadingTime';
 
-    // URL de protocolo nativo (para intentar abrir la app)
-    const whatsappProtocolo = `whatsapp://send?phone=${phoneNumber}&text=${encodeURIComponent(messageTemplate)}`;
+    /**
+     * Revisa el Local Storage. 
+     * @returns {string|boolean} Retorna la fecha de la próxima tirada si está restringido, o False si no lo está.
+     */
+    function checkReadingRestriction() {
+        const lastReadingTime = localStorage.getItem(localStorageKey);
+        const now = new Date().getTime();
 
-    // -------------------------- FUNCIONES DE CHAT (ASISTENTE) --------------------------
-    const chatOverlay = document.getElementById('chatOverlay');
-    const chatMessages = document.getElementById('chatMessages');
-    const dropdownMenu = document.getElementById('dropdownMenu'); 
+        if (lastReadingTime) {
+            const timeDifference = now - parseInt(lastReadingTime);
 
-    // Función que abre el modal y muestra la descripción de la cita inmediatamente
-    function mostrarDetalleDeCita() {
-        abrirChatAsistente(true); // Abre el chat, forzando la visualización de la confirmación
+            if (timeDifference < readingIntervalMs) {
+                // La restricción está activa
+                const nextAllowedTime = new Date(parseInt(lastReadingTime) + readingIntervalMs);
+                // Formatear la fecha para el mensaje
+                const nextDateFormatted = nextAllowedTime.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+                return nextDateFormatted; 
+            }
+        }
+        return false; 
     }
 
-    function abrirChatAsistente(forzarConfirmacion = false) {
+    /**
+     * Muestra el modal de restricción.
+     */
+    function showTarotRestrictionModal(nextDateFormatted) {
+        const modal = document.getElementById('tarotModal');
+        const nextReadingSpan = document.getElementById('nextReadingDate');
+        
+        // Coloca la fecha formateada en el modal
+        nextReadingSpan.textContent = nextDateFormatted;
+        
+        modal.style.display = 'flex';
+    }
+
+    /**
+     * Cierra el modal de restricción.
+     */
+    function closeTarotRestrictionModal(event) {
+        if (event && event.target.className === 'modal-overlay') {
+            document.getElementById('tarotModal').style.display = 'none';
+        }
+        // Se llama también desde el botón "Agendar Cita" si es necesario (el botón llama a abrirAgendar())
+        if (!event) { 
+             document.getElementById('tarotModal').style.display = 'none';
+        }
+    }
+
+
+    /**
+     * Lógica principal para barajar las cartas. Chequea la restricción primero.
+     */
+    function shuffleAndDrawCards() {
+        const nextDate = checkReadingRestriction();
+        const drawButton = document.getElementById('drawButton');
+
+        if (nextDate) {
+            // Caso 1: Restringido. Muestra modal y sale.
+            showTarotRestrictionModal(nextDate);
+            return;
+        }
+        
+        // Caso 2: No restringido. Procede.
+        
+        // A. Guardar la marca de tiempo y bloquear la posibilidad de un nuevo barajado por 30 días.
+        localStorage.setItem(localStorageKey, new Date().getTime());
+        drawButton.textContent = 'Revela las Cartas (Uso único)';
+        // Se mantiene el onclick para que al intentar re-barajar muestre el modal.
+
+        // B. Resetear la interfaz
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            card.classList.remove('flipped');
+            card.classList.remove('ready-to-flip');
+            card.querySelector('.card-front').innerHTML = '';
+            card.querySelector('.card-back').innerHTML = 'TAROT'; 
+        });
+        document.getElementById('readingResult').style.display = 'none';
+        document.getElementById('readingResult').innerHTML = '';
+        flippedCount = 0;
+
+        // C. Barajar y obtener 3 cartas (sin reemplazo)
+        const shuffledDeck = [...tarotDeck].sort(() => 0.5 - Math.random());
+        drawnCards = shuffledDeck.slice(0, 3);
+
+        // D. Aplicar estilo "listo" después del barajado
+        setTimeout(() => {
+            // Añadir clase y mensaje a las cartas
+            cards.forEach(card => {
+                card.classList.add('ready-to-flip');
+                card.querySelector('.card-back').innerHTML = 'Clic aquí para voltear la carta';
+            });
+        }, 500);
+    }
+
+    function flipCard(index) {
+        // Permitir voltear si no se ha superado el conteo de 3 y la carta está lista
+        if (!document.getElementById(`card${index}`).classList.contains('ready-to-flip') || flippedCount >= 3) return; 
+
+        const cardElement = document.getElementById(`card${index}`);
+        if (cardElement.classList.contains('flipped')) return;
+
+        const cardData = drawnCards[index - 1]; 
+
+        // 1. Rellenar el contenido frontal de la carta 
+        const frontElement = document.getElementById(`front${index}`);
+        let position = index === 1 ? "Pasado" : index === 2 ? "Presente" : "Futuro";
+        
+        frontElement.innerHTML = `
+            <strong>${cardData.name}</strong>
+            <p>${position}</p>
+            <span class="meaning">${cardData.meaning}</span>
+        `;
+
+        // 2. Voltear la carta y quitar la clase ready-to-flip
+        cardElement.classList.remove('ready-to-flip');
+        cardElement.classList.add('flipped');
+        flippedCount++;
+
+        // 3. Revisar si todas las cartas han sido volteadas
+        if (flippedCount === 3) {
+            showReadingResult();
+        }
+    }
+    
+    /**
+     * Genera un resumen de la tirada de 3 cartas (Pasado, Presente, Futuro).
+     */
+    function generateReadingSummary(cards) {
+        const [pastCard, presentCard, futureCard] = cards;
+        
+        const pastConcept = pastCard.concept;
+        const presentConcept = presentCard.concept;
+        const futureConcept = futureCard.concept;
+
+        let summary = `<h3>✨ Interpretación de tu Tirada de 3 Cartas ✨</h3>`;
+        
+        summary += `<p>El **Pasado** (***${pastCard.name}***) revela que tu situación actual tiene sus raíces en **${pastConcept}** y la energía de ${pastCard.meaning.toLowerCase().split(',')[0].trim()}. Es la base que te trajo hasta aquí.</p>`;
+        
+        summary += `<p>El **Presente** (***${presentCard.name}***) te está pidiendo un enfoque claro en **${presentConcept}**. Es la carta de acción que define tu próximo paso. Debes manifestar ${presentCard.meaning.toLowerCase().split(',')[0].trim()} en este momento.</p>`;
+        
+        summary += `<p>El **Futuro** (***${futureCard.name}***) es la promesa de lo que está por llegar. Si mantienes el enfoque en el Presente, te dirigirás hacia **${futureConcept}** y una potencial ${futureCard.meaning.toLowerCase().split(',')[0].trim()}.</p>`;
+        
+        return summary;
+    }
+
+    function showReadingResult() {
+        const resultDiv = document.getElementById('readingResult');
+        
+        const summaryHTML = generateReadingSummary(drawnCards);
+        resultDiv.innerHTML = summaryHTML; 
+        
+        // Agregar CTA (Llamada a la Acción) con el texto solicitado
+        resultDiv.innerHTML += `
+            <hr style="border-top: 1px solid #e0b3ff; margin: 15px 0;">
+            <p style="text-align: center; margin-bottom: 15px;">
+                Para obtener una **lectura más completa y guiada** en el Tarot, el Péndulo y los Cristales de Cuarzo, **¡agenda tu cita!**
+            </p>
+            <button class="btn" style="width: 100%; margin: 0 0 5px 0;" onclick="abrirAgendar()">
+                📅 **Agendar Cita**
+            </button>
+        `;
+
+        // Mostrar resultados
+        resultDiv.style.display = 'block';
+
+        // NO se toca el botón de "Barajar de Nuevo" ya que ahora está bloqueado por 30 días.
+    }
+
+    // --- LÓGICA DEL CHAT (Mantenida) ---
+
+    const chatOverlay = document.getElementById('chatOverlay');
+    const chatMessages = document.getElementById('chatMessages');
+    const userInput = document.getElementById('userInput');
+    const chatIcon = document.getElementById('chatIcon'); 
+    const dropdownMenu = document.getElementById('dropdownMenu'); 
+
+    let pasoAgendar = 0;
+    let datosCliente = { nombre: "", apellido: "", tipoCita: "Sesión Integral de Equilibrio Vibracional ($50)", pais: "", prefijo: "", telefono: "", mensaje: "" };
+
+    const paises = {
+      "Venezuela": "+58",
+      "Colombia": "+57",
+      "Argentina": "+54",
+      "México": "+52",
+      "España": "+34",
+      "Chile": "+56",
+      "Perú": "+51",
+      "Ecuador": "+593",
+      "Estados Unidos": "+1"
+    };
+    
+    const numeroDestino = "17542486274";
+
+    function abrirChat() {
+      // Cierra el modal de Tarot si estaba abierto
+      closeTarotRestrictionModal();
+      
       chatOverlay.style.display = "flex";
       document.querySelector('.chat-container-wrapper').style.display = "none";
-      
-      // Si se abre desde el ícono "💬" y no hay mensajes, se inicia el flujo normal.
-      if (!chatMessages.hasChildNodes() && !forzarConfirmacion) {
-        mostrarMensaje("bot", "¡Hola! Bienvenido/a, soy el asistente virtual de Isabel Ramirez. **Por favor, haz clic en Agendar para iniciar tu reserva.**");
-        mostrarOpcionesIniciales(); 
-      } 
-      // Si se llama desde los botones de CTA o es un chat vacío, se salta a la confirmación.
-      else if (forzarConfirmacion || !chatMessages.hasChildNodes()) {
-         // Asegura que el chat esté limpio antes de mostrar la confirmación
-         if (chatMessages.hasChildNodes()) {
-            chatMessages.innerHTML = '';
-         }
-         mostrarConfirmacionFinalSimplificada();
+      if (!chatMessages.hasChildNodes()) {
+        mostrarMensaje("bot", "¡Hola! Bienvenido/a, soy el asistente virtual de Isabel Ramirez. ¿Sobre qué te gustaría hablar hoy?");
+        mostrarOpciones();
       }
-      
       dropdownMenu.style.display = 'none'; 
     }
 
-    function cerrarChatAsistente(event) {
-      if (!event || event.target === chatOverlay || event.target.className === 'close-btn') {
+    function abrirAgendar() {
+      // Cierra el modal de Tarot si estaba abierto
+      closeTarotRestrictionModal();
+      
+      abrirChat();
+      if (chatMessages.hasChildNodes()) {
+        mostrarMensaje("user", "📅 Agendar una cita");
+      }
+      manejarOpcion("agendar"); 
+    }
+
+    function cerrarChat(event) {
+      if (event && event.target === chatOverlay) {
         chatOverlay.style.display = "none";
         document.querySelector('.chat-container-wrapper').style.display = "flex"; 
+      } else if (!event || event.target.className === 'close-btn') {
+        chatOverlay.style.display = "none";
+        document.querySelector('.chat-container-wrapper').style.display = "flex"; 
+      }
+      
+      if (!event) {
+          chatOverlay.style.display = "none";
+          document.querySelector('.chat-container-wrapper').style.display = "flex";
       }
       dropdownMenu.style.display = 'none';
     }
@@ -422,7 +952,8 @@
         
         chatMessages.innerHTML = ''; 
         mostrarMensaje("bot", "🗑️ Historial de chat eliminado. ¿En qué puedo ayudarte ahora?");
-        mostrarOpcionesIniciales(); // Vuelve a mostrar las opciones
+        mostrarOpciones();
+        pasoAgendar = 0; 
         
         dropdownMenu.style.display = 'none'; 
     }
@@ -435,105 +966,222 @@
       chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
-    // Muestra la única opción de Agendar Cita al inicio del chat (cuando no se usa el CTA)
-    function mostrarOpcionesIniciales() { 
+    function mostrarOpciones() {
       const opciones = [
+        { text: "🔮 Hablar sobre el Tarot", action: "tarot" },
+        { text: "✨ Terapias con cristales", action: "terapias" },
+        { text: "📿 Lectura del péndulo", action: "pendulo" },
+        { text: "💎 Precios de las sesiones", action: "precios" },
         { text: "📅 Agendar una cita", action: "agendar" }        
       ];
       opciones.forEach(op => {
         const btn = document.createElement('div');
         btn.classList.add('option');
         btn.textContent = op.text;
-        btn.onclick = () => { 
-            mostrarMensaje("user", op.text); 
-            mostrarConfirmacionFinalSimplificada(); 
-        }; 
+        btn.onclick = () => manejarOpcion(op.action);
         chatMessages.appendChild(btn);
       });
       chatMessages.scrollTop = chatMessages.scrollHeight;
     }
     
-    // Flujo que muestra la descripción y el botón final
-    function mostrarConfirmacionFinalSimplificada() {
-        // Eliminar opciones previas si existen
-        const options = chatMessages.querySelectorAll('.option');
-        options.forEach(opt => opt.remove()); 
-        
-        const confirmMessage = `
-            <h3>✅ Agendamiento de Cita</h3>
-            <p>¡Excelente! La sesión de **Equilibrio Vibracional** tiene un **costo de 50$** e incluye:</p>
+    function askYesNoQuestion(action) {
+        const btnYes = document.createElement('div');
+        btnYes.classList.add('option');
+        btnYes.textContent = "✅ Sí, agendar cita";
+        btnYes.onclick = () => {
+            mostrarMensaje("user", "Sí");
+            pasoAgendar = 1; 
+            mostrarMensaje("bot", "Excelente ✨ Vamos a agendar. ¿Cuál es tu **nombre**?");
+        };
+        chatMessages.appendChild(btnYes);
 
-            <div style="background: #250046; padding: 10px; border-radius: 8px; margin: 10px 0;">
+        const btnNo = document.createElement('div');
+        btnNo.classList.add('option');
+        btnNo.textContent = "❌ No, gracias";
+        btnNo.onclick = () => {
+            mostrarMensaje("user", "No, gracias");
+            mostrarMensaje("bot", "¿Deseas volver a ver las opciones principales o salir?");
+            
+            const btnInicio = document.createElement('div');
+            btnInicio.classList.add('option');
+            btnInicio.textContent = "🔄 Volver a opciones";
+            btnInicio.onclick = () => { mostrarMensaje("user", "Volver a opciones"); chatMessages.innerHTML = ""; abrirChat(); };
+            chatMessages.appendChild(btnInicio);
+
+            const btnSalir = document.createElement('div');
+            btnSalir.classList.add('option');
+            btnSalir.textContent = "❌ Salir";
+            btnSalir.onclick = () => { mostrarMensaje("user", "Salir"); cerrarChat(); }; 
+            chatMessages.appendChild(btnSalir);
+            
+            pasoAgendar = "fin"; 
+        };
+        chatMessages.appendChild(btnNo);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+    
+    function mostrarOpcionesPais() {
+        Object.keys(paises).forEach(p => {
+            const btn = document.createElement('div');
+            btn.classList.add('option');
+            btn.textContent = p;
+            btn.onclick = () => seleccionarPais(p);
+            chatMessages.appendChild(btn);
+        });
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        pasoAgendar = -1; 
+    }
+
+    function seleccionarPais(p) {
+        datosCliente.pais = p;
+        datosCliente.prefijo = paises[p];
+        mostrarMensaje("user", p);
+        mostrarMensaje("bot", `Perfecto. Para **${p}**, escribe tu número de teléfono SIN el prefijo ${datosCliente.prefijo}. Ejemplo: 4121234567`);
+        pasoAgendar = 3; 
+    }
+
+    function mostrarConfirmacionFinal() {
+        const confirmMessage = `
+            <h3>✅ Confirmación de Cita</h3>
+            <p>¡Gracias, **${datosCliente.nombre} ${datosCliente.apellido}**! Estás a un paso de agendar tu sesión.</p>
+
+            <h4>Tu Sesión Incluye:</h4>
+            <div style="background: #250046; padding: 10px; border-radius: 8px;">
                 <p style="margin: 0; font-weight: bold; color: #e0b3ff; text-align: center; border-bottom: 1px solid #370055; padding-bottom: 5px;">
-                    ✨ **Sesión Integral de Equilibrio Vibracional (50$)** ✨
+                    ✨ **${datosCliente.tipoCita}** ✨
                 </p>
                 <ul style="padding-left: 20px; margin: 10px 0; font-size: 0.95rem;">
-                    <li>**Lectura Guiada del Tarot** (claridad y dirección).</li>
-                    <li>**Terapia Energética con Cristales** (limpieza y alineación).</li>
-                    <li>**Consulta con el Péndulo** (respuestas concisas).</li>
+                    <li>**Lectura Guiada del Tarot** (para claridad y dirección).</li>
+                    <li>**Terapia Energética con Cristales** (para limpieza y alineación).</li>
+                    <li>**Consulta con el Péndulo** (para respuestas concisas).</li>
                 </ul>
+                <p style="text-align: center; font-size: 1.1rem; font-weight: bold; color: #fff; margin: 0;">Costo Total: **50$**</p>
             </div>
             
-            <p style="margin-top: 15px; font-weight: bold; color: #e0b3ff; font-size: 0.95rem;">
-                Presiona el botón "Aceptar para Agendar Cita" para ser redirigido a WhatsApp y concretar tu reserva.
+            <p style="margin-top: 15px;">**Tu Mensaje:** <i>"${datosCliente.mensaje}"</i></p>
+            <p style="margin-top: 10px; font-weight: bold; color: #e0b3ff; font-size: 0.95rem;">
+                Al hacer clic en "Agendar Cita", serás redirigido a WhatsApp para enviar los datos a Isabel y finalizar tu reserva.
             </p>
         `;
         
         mostrarMensaje("bot", confirmMessage);
         
-        // BOTÓN FINAL REQUERIDO: Llama a la función que verifica WhatsApp instalado
         const btnFinal = document.createElement('div');
-        btnFinal.classList.add('option', 'whatsapp-final');
-        btnFinal.textContent = "✅ Aceptar para Agendar Cita";
-        btnFinal.onclick = redirigirAWhatsAppDesdeChat; 
+        btnFinal.classList.add('option');
+        btnFinal.textContent = "📲 Agendar Cita y Enviar por WhatsApp";
+        btnFinal.onclick = enviarCitaWhatsApp;
         chatMessages.appendChild(btnFinal);
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
     
-    // -------------------------- FUNCIONES DE WHATSAPP Y REDIRECCIÓN --------------------------
-    
-    // Función para el botón final verde. Contiene la lógica de verificación de WhatsApp instalado.
-    function redirigirAWhatsAppDesdeChat() {
-        // Cierra el chat antes de intentar la redirección
-        cerrarChatAsistente(); 
+    function enviarCitaWhatsApp() {
+        const texto = `Hola, quiero agendar una cita.\nTipo de Cita: ${datosCliente.tipoCita}\nNombre: ${datosCliente.nombre} ${datosCliente.apellido}\nPaís: ${datosCliente.pais}\nTeléfono: ${datosCliente.prefijo}${datosCliente.telefono}\nMensaje: ${datosCliente.mensaje}`;
+        const url = `https://wa.me/${numeroDestino}?text=${encodeURIComponent(texto)}`;
         
-        // 1. Intento nativo (protocolo whatsapp://)
-        const newWindow = window.open(whatsappProtocolo, '_blank'); 
+        window.open(url, "_blank"); 
+        
+        setTimeout(() => {
+            mostrarMensaje("bot", "Cita enviada a WhatsApp. ¿Quieres volver al inicio o salir?");
+            const btnInicio = document.createElement('div');
+            btnInicio.classList.add('option');
+            btnInicio.textContent = "🔄 Volver al inicio";
+            btnInicio.onclick = () => { chatMessages.innerHTML = ""; abrirChat(); };
+            chatMessages.appendChild(btnInicio);
 
-        // 2. Fallback a enlace universal (https://wa.me/)
-        setTimeout(function() {
-            // Si la ventana sigue en blanco (falló la apertura nativa)
-            if (newWindow && newWindow.location.href.includes('about:blank')) {
-                 newWindow.location.href = whatsappLinkCompleto;
-            }
-        }, 500); 
+            const btnSalir = document.createElement('div');
+            btnSalir.classList.add('option');
+            btnSalir.textContent = "❌ Salir";
+            btnSalir.onclick = () => cerrarChat(); 
+            chatMessages.appendChild(btnSalir);
+        }, 1000);
     }
 
-    // -------------------------- DETECCIÓN DE NAVEGADOR (TIKTOK) --------------------------
-    function isTikTokBrowser() {
-        const ua = navigator.userAgent || navigator.vendor || window.opera;
-        // La detección se basa en el User Agent
-        return ua.indexOf("TikTok") > -1;
+
+    function manejarOpcion(action) {
+      if (action === "tarot") {
+        mostrarMensaje("bot", `📖 La lectura del Tarot es una herramienta de adivinación que ofrece guía y claridad en tu camino.`);
+        mostrarMensaje("bot", `**¿Te gustaría comenzar el proceso de agendamiento para una lectura?**`);
+        askYesNoQuestion("tarot");
+      } else if (action === "precios") {
+        mostrarMensaje("bot", `✨ Nuestra sesión completa de **Equilibrio Vibracional** es un servicio integral que incluye:
+- **Lectura Guiada del Tarot** (para claridad y dirección).
+- **Terapia Energética con Cristales** (para limpieza y alineación).
+- **Consulta con el Péndulo** (para respuestas concisas).
+
+Esta experiencia holística tiene un **costo total de 50$**.`);
+        mostrarMensaje("bot", `**¿Deseas agendar esta sesión integral de Equilibrio Vibracional?**`);
+        askYesNoQuestion("precios");
+      } else if (action === "terapias") {
+        mostrarMensaje("bot", `💎 La Terapia con Cristales (o Cristaloterapia) es una práctica de bienestar que utiliza la energía de los cuarzos para armonizar tus chakras y limpiar tu aura.`);
+        mostrarMensaje("bot", `**¿Deseas agendar una sesión de Terapia con Cristales?**`);
+        askYesNoQuestion("terapias");
+      } else if (action === "pendulo") {
+        mostrarMensaje("bot", `📿 La Lectura con Péndulo se basa en la radiestesia, permitiendo obtener respuestas claras de 'Sí' o 'No' a preguntas específicas. Ideal para momentos de indecisión.`);
+        mostrarMensaje("bot", `**¿Deseas agendar una cita para una lectura con Péndulo?**`);
+        askYesNoQuestion("pendulo");
+      } else if (action === "agendar") {
+        pasoAgendar = 1;
+        mostrarMensaje("bot", "Perfecto ✨ Empecemos tu cita. ¿Cuál es tu **nombre**?");
+      }
+      dropdownMenu.style.display = 'none'; 
     }
 
-    function displayTikTokWarning() {
-        if (isTikTokBrowser()) {
-            const container = document.getElementById('tiktok-warning-container');
-            const warning = document.createElement('div');
-            warning.classList.add('tiktok-warning');
-            warning.innerHTML = `
-                🚨 ¡ATENCIÓN USUARIO DE TIKTOK! 🚨<br>
-                Para una carga correcta y para abrir WhatsApp **directamente**, presiona los **tres puntos (⋮)** arriba y selecciona **"Abrir en el navegador del sistema"** (Chrome/Safari).
-            `;
-            if (container) {
-                container.appendChild(warning);
-            }
+    function sendMessage() {
+      const msg = userInput.value.trim();
+      if (!msg) return;
+      
+      if (pasoAgendar === -1) {
+          mostrarMensaje("bot", "Por favor, selecciona tu país de la lista de opciones para continuar.");
+          userInput.value = '';
+          return;
+      }
+      
+      mostrarMensaje("user", msg);
+      dropdownMenu.style.display = 'none'; 
+
+      if (pasoAgendar > 0) {
+        if (pasoAgendar === 1) {
+          datosCliente.nombre = msg;
+          mostrarMensaje("bot", "Gracias 🙏 Ahora dime tu **apellido**.");
+          pasoAgendar = 2;
+        } else if (pasoAgendar === 2) {
+          datosCliente.apellido = msg;
+          mostrarMensaje("bot", "Excelente. ¿De qué país escribes? (Por favor, selecciona una opción)");
+          mostrarOpcionesPais();
+          pasoAgendar = -1; 
+          
+        } else if (pasoAgendar === 3) {
+          datosCliente.telefono = msg;
+          mostrarMensaje("bot", "Por último, escribe un **mensaje breve** con lo que buscas en tu cita.");
+          pasoAgendar = 4;
+        } else if (pasoAgendar === 4) {
+          datosCliente.mensaje = msg;
+          
+          mostrarConfirmacionFinal();
+          
+          pasoAgendar = "fin"; 
         }
+      } else {
+          mostrarMensaje("bot", "No tengo una respuesta específica para eso. ¿Te gustaría ver las **opciones principales** o **agendar una cita**?");
+          mostrarOpciones();
+          pasoAgendar = 0; 
+      }
+      userInput.value = '';
     }
-
-    window.onload = displayTikTokWarning;
+    
+    userInput.addEventListener("keypress", function(e) {
+      if (e.key === "Enter") sendMessage();
+    });
+    
+    document.addEventListener('click', function(event) {
+        const menuDropdown = document.querySelector('.menu-dropdown');
+        const isClickInside = menuDropdown.contains(event.target) || dropdownMenu.contains(event.target);
+        
+        if (!isClickInside && dropdownMenu.style.display === 'block') {
+            dropdownMenu.style.display = 'none';
+        }
+    });
 
   </script>
 </body>
 </html>
-
