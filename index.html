@@ -400,7 +400,8 @@
 
     let pasoAgendar = 0; 
 
-    const numeroDestino = "17542486274";
+    // ¡NÚMERO DE WHATSAPP CONFIRMADO!
+    const numeroDestino = "17542486274"; 
 
     function abrirChat() {
       chatOverlay.style.display = "flex";
@@ -483,7 +484,7 @@
       chatMessages.scrollTop = chatMessages.scrollHeight;
     }
     
-    // [MODIFICADA] Flujo simplificado de confirmación.
+    // Flujo simplificado de confirmación.
     function mostrarConfirmacionFinalSimplificada() {
         const confirmMessage = `
             <h3>✅ Agendamiento de Cita</h3>
@@ -507,7 +508,7 @@
         
         mostrarMensaje("bot", confirmMessage);
         
-        // BOTÓN FINAL REQUERIDO
+        // BOTÓN FINAL QUE REDIRIGE DIRECTO A WHATSAPP
         const btnFinal = document.createElement('div');
         btnFinal.classList.add('option', 'whatsapp-final');
         btnFinal.textContent = "✅ Aceptar para Agendar Cita";
@@ -520,6 +521,7 @@
     // Envío directo a WhatsApp con mensaje pre-escrito.
     function enviarCitaWhatsAppSimplificada() {
         const mensajePreescrito = `Hola Isabel, me gustaría agendar una cita. Estoy interesado(a) en la Sesión Integral de Equilibrio Vibracional que cuesta $50 (incluye Tarot, Cristales y Péndulo). Por favor, indícame cómo proceder para el pago y la reserva.`;
+        // La URL utiliza el número de destino 17542486274
         const url = `https://wa.me/${numeroDestino}?text=${encodeURIComponent(mensajePreescrito)}`;
         
         window.open(url, "_blank"); 
@@ -551,7 +553,7 @@
       dropdownMenu.style.display = 'none'; 
     }
 
-    // ELIMINADA LA FUNCIÓN sendMessage YA QUE NO HAY INPUT DE TEXTO
+    // Se eliminó la función sendMessage ya que no hay input de texto.
 
     document.addEventListener('click', function(event) {
         const menuDropdown = document.querySelector('.menu-dropdown');
