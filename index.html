@@ -73,14 +73,14 @@
       background: #a855f7;
     }
     
-    /* --- INICIO: ESTILOS PARA EL INDICADOR DE DESLIZAMIENTO (ELIMINADO PERO EL ESTILO POR SI ACASO) --- */
+    /* --- INICIO: ESTILOS PARA EL INDICADOR DE DESLIZAMIENTO --- */
     .scroll-hint {
-        margin-bottom: 1rem; 
+        margin-bottom: 1rem; /* Separación de la imagen */
         font-size: 1.1rem;
         font-weight: bold;
-        color: #e0b3ff; 
+        color: #e0b3ff; /* Color lila */
         text-shadow: 0 0 5px #8338ec;
-        animation: bounce 2s infinite; 
+        animation: bounce 2s infinite; /* Aplicar animación */
     }
 
     @keyframes bounce {
@@ -173,7 +173,7 @@
       width: 100%;
       height: 100%;
     }
-    
+
     /* ---------------------------------------------------------------------- */
     /* ESTILOS DE CHAT (Mantenidos) */
     /* ---------------------------------------------------------------------- */
@@ -356,6 +356,9 @@
 </head>
 <body>
   <header>
+    <div class="scroll-hint">
+        👇 DESLIZA HASTA ABAJO PARA VER EL VIDEO Y SOLICITAR TU CONSULTA 👇
+    </div>
     <img src="https://github.com/isabelramirez28092025-byte/tarot/blob/main/WhatsApp%20Image%202025-09-28%20at%201.00.07%20PM.jpeg?raw=true" alt="Perfil Tarot">
     <h1>EQUILIBRIO VIBRACIONAL CON CRISTALES DE CUARZO Y PENDULO</h1>
     <b>✨Terapias Holísticas y Energéticas✨</b>
@@ -388,7 +391,11 @@
         <p style="color: #e0b3ff; margin-bottom: 1rem; font-size: 1rem; font-weight: bold;">
             ¿Sientes la llamada? Da el primer paso hacia tu **Equilibrio Vibracional** total.
         </p>
-        <button class="btn" style="width: 100%; display: block; box-sizing: border-box;" onclick="abrirAgendar()">
+        <button 
+          class="btn" 
+          style="width: 100%; display: block; box-sizing: border-box;" 
+          onclick="window.open('https://wa.me/17542486274?text=%22Hola%20Isabel%2C%20Me%20gustar%C3%ADa%20agendar%20una%20cita%20para%20la%20Sesi%C3%B3n%20Integral%20de%20Equilibrio%20Vibracional%20(%2450).%20Quedo%20atento(a)%20a%20tu%20disponibilidad%20y%20al%20proceso%20para%20reservar.%20%C2%A1Gracias!%22', '_blank')"
+        >
             Solicita tu consulta aquí 👇
         </button>
     </div>
@@ -423,8 +430,7 @@
   </div>
 
   <script>
-    
-    // --- LÓGICA DEL CHAT SIMPLIFICADA (VERSIÓN FINAL) ---
+    // --- LÓGICA DEL CHAT SIMPLIFICADA (NUEVA VERSIÓN) ---
 
     const chatOverlay = document.getElementById('chatOverlay');
     const chatMessages = document.getElementById('chatMessages');
@@ -433,9 +439,12 @@
     
     // NÚMERO DE WHATSAPP CONFIRMADO
     const numeroDestino = "17542486274"; 
+    // ENLACE DE WHATSAPP COMPLETO SOLICITADO
+    const whatsappLinkCompleto = "https://wa.me/17542486274?text=%22Hola%20Isabel%2C%20Me%20gustar%C3%ADa%20agendar%20una%20cita%20para%20la%20Sesi%C3%B3n%20Integral%20de%20Equilibrio%20Vibracional%20(%2450).%20Quedo%20atento(a)%20a%20tu%20disponibilidad%20y%20al%20proceso%20para%20reservar.%20%C2%A1Gracias!%22";
+
 
     function abrirChat() {
-      // closeTarotRestrictionModal(); // ELIMINADA: Ya no existe el modal
+      // Se elimina la llamada a closeTarotRestrictionModal()
       
       chatOverlay.style.display = "flex";
       document.querySelector('.chat-container-wrapper').style.display = "none";
@@ -447,7 +456,7 @@
     }
 
     function abrirAgendar() {
-      // closeTarotRestrictionModal(); // ELIMINADA: Ya no existe el modal
+      // Se elimina la llamada a closeTarotRestrictionModal()
       abrirChat();
       // Simula el click del usuario en "Agendar una cita"
       if (chatMessages.lastChild && chatMessages.lastChild.classList.contains('option')) {
@@ -548,6 +557,7 @@
         const btnFinal = document.createElement('div');
         btnFinal.classList.add('option', 'whatsapp-final');
         btnFinal.textContent = "✅ Aceptar para Agendar Cita";
+        // La función enviarCitaWhatsAppSimplificada utiliza el enlace completo de WhatsApp
         btnFinal.onclick = enviarCitaWhatsAppSimplificada; 
         chatMessages.appendChild(btnFinal);
         chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -555,10 +565,8 @@
     
     // Envío directo a WhatsApp con mensaje pre-escrito.
     function enviarCitaWhatsAppSimplificada() {
-        const mensajePreescrito = `Hola Isabel, me gustaría agendar una cita. Estoy interesado(a) en la Sesión Integral de Equilibrio Vibracional que cuesta $50 (incluye Tarot, Cristales y Péndulo). Por favor, indícame cómo proceder para el pago y la reserva.`;
-        const url = `https://wa.me/${numeroDestino}?text=${encodeURIComponent(mensajePreescrito)}`;
-        
-        window.open(url, "_blank"); 
+        // Se usa el enlace completo y codificado que pediste previamente
+        window.open(whatsappLinkCompleto, "_blank"); 
         
         setTimeout(() => {
             // Eliminar opciones previas para limpiar la interfaz del bot
@@ -592,6 +600,8 @@
       dropdownMenu.style.display = 'none'; 
     }
     
+    // Se eliminan sendMessage y la función de listener para Enter ya que el input está deshabilitado.
+
     document.addEventListener('click', function(event) {
         const menuDropdown = document.querySelector('.menu-dropdown');
         const isClickInside = menuDropdown && (menuDropdown.contains(event.target) || dropdownMenu.contains(event.target));
