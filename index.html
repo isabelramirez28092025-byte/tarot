@@ -430,22 +430,17 @@
   </div>
 
   <script>
-    // --- LÓGICA DEL CHAT SIMPLIFICADA (NUEVA VERSIÓN) ---
+    // --- LÓGICA DEL CHAT SIMPLIFICADA ---
 
     const chatOverlay = document.getElementById('chatOverlay');
     const chatMessages = document.getElementById('chatMessages');
-    const chatIcon = document.getElementById('chatIcon'); 
     const dropdownMenu = document.getElementById('dropdownMenu'); 
     
-    // NÚMERO DE WHATSAPP CONFIRMADO
-    const numeroDestino = "17542486274"; 
-    // ENLACE DE WHATSAPP COMPLETO SOLICITADO
+    // ENLACE DE WHATSAPP COMPLETO VERIFICADO
     const whatsappLinkCompleto = "https://wa.me/17542486274?text=%22Hola%20Isabel%2C%20Me%20gustar%C3%ADa%20agendar%20una%20cita%20para%20la%20Sesi%C3%B3n%20Integral%20de%20Equilibrio%20Vibracional%20(%2450).%20Quedo%20atento(a)%20a%20tu%20disponibilidad%20y%20al%20proceso%20para%20reservar.%20%C2%A1Gracias!%22";
 
 
     function abrirChat() {
-      // Se elimina la llamada a closeTarotRestrictionModal()
-      
       chatOverlay.style.display = "flex";
       document.querySelector('.chat-container-wrapper').style.display = "none";
       if (!chatMessages.hasChildNodes()) {
@@ -456,13 +451,11 @@
     }
 
     function abrirAgendar() {
-      // Se elimina la llamada a closeTarotRestrictionModal()
+      // Abre el chat y simula el inicio del proceso de agendamiento.
       abrirChat();
-      // Simula el click del usuario en "Agendar una cita"
       if (chatMessages.lastChild && chatMessages.lastChild.classList.contains('option')) {
         mostrarMensaje("user", "📅 Agendar una cita");
       }
-      // LLAMADA DIRECTA AL FLUJO SIMPLIFICADO
       mostrarConfirmacionFinalSimplificada(); 
     }
 
@@ -515,7 +508,6 @@
         const btn = document.createElement('div');
         btn.classList.add('option');
         btn.textContent = op.text;
-        // La acción ahora llama directamente a mostrarConfirmacionFinalSimplificada()
         btn.onclick = () => { 
             mostrarMensaje("user", op.text); 
             mostrarConfirmacionFinalSimplificada(); 
@@ -557,7 +549,7 @@
         const btnFinal = document.createElement('div');
         btnFinal.classList.add('option', 'whatsapp-final');
         btnFinal.textContent = "✅ Aceptar para Agendar Cita";
-        // La función enviarCitaWhatsAppSimplificada utiliza el enlace completo de WhatsApp
+        // Usa la función que apunta al enlace verificado (whatsappLinkCompleto)
         btnFinal.onclick = enviarCitaWhatsAppSimplificada; 
         chatMessages.appendChild(btnFinal);
         chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -565,7 +557,7 @@
     
     // Envío directo a WhatsApp con mensaje pre-escrito.
     function enviarCitaWhatsAppSimplificada() {
-        // Se usa el enlace completo y codificado que pediste previamente
+        // Usa el enlace verificado
         window.open(whatsappLinkCompleto, "_blank"); 
         
         setTimeout(() => {
@@ -588,20 +580,6 @@
         }, 1000);
     }
     
-    // Función de manejo de opciones simplificada
-    function manejarOpcion(action) {
-      if (action === "agendar") {
-        mostrarConfirmacionFinalSimplificada();
-      } else {
-        // En esta versión simplificada, cualquier otra opción redirige a agendar
-        mostrarMensaje("user", "Solicitud recibida");
-        mostrarConfirmacionFinalSimplificada();
-      }
-      dropdownMenu.style.display = 'none'; 
-    }
-    
-    // Se eliminan sendMessage y la función de listener para Enter ya que el input está deshabilitado.
-
     document.addEventListener('click', function(event) {
         const menuDropdown = document.querySelector('.menu-dropdown');
         const isClickInside = menuDropdown && (menuDropdown.contains(event.target) || dropdownMenu.contains(event.target));
