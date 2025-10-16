@@ -394,7 +394,7 @@
         <button 
           class="btn" 
           style="width: 100%; display: block; box-sizing: border-box;" 
-          onclick="window.open('https://wa.me/17542486274?text=%22Hola%20Isabel%2C%20Me%20gustar%C3%ADa%20agendar%20una%20cita%20para%20la%20Sesi%C3%B3n%20Integral%20de%20Equilibrio%20Vibracional%20(%2450).%20Quedo%20atento(a)%20a%20tu%20disponibilidad%20y%20al%20proceso%20para%20reservar.%20%C2%A1Gracias!%22', '_blank')"
+          onclick="redirigirAWhatsApp()"
         >
             Solicita tu consulta aquí 👇
         </button>
@@ -402,7 +402,7 @@
     </section>
 
   <div class="chat-container-wrapper">
-      <div class="chat-label" onclick="abrirAgendar()">Agenda tu cita aquí 👉</div> 
+      <div class="chat-label" onclick="redirigirAWhatsApp()">Agenda tu cita aquí 👉</div> 
       <div class="chat-icon" id="chatIcon" onclick="abrirChat()">💬</div>
   </div>
 
@@ -430,15 +430,20 @@
   </div>
 
   <script>
-    // --- LÓGICA DEL CHAT SIMPLIFICADA ---
+    // ENLACE DE WHATSAPP COMPLETO VERIFICADO Y CENTRALIZADO
+    const whatsappLinkCompleto = "https://wa.me/17542486274?text=%22Hola%20Isabel%2C%20Me%20gustar%C3%ADa%20agendar%20una%20cita%20para%20la%20Sesi%C3%B3n%20Integral%20de%20Equilibrio%20Vibracional%20(%2450).%20Quedo%20atento(a)%20a%20tu%20disponibilidad%20y%20al%20proceso%20para%20reservar.%20%C2%A1Gracias!%22";
 
+    // --- FUNCIÓN CENTRALIZADA PARA REDIRIGIR A WHATSAPP ---
+    function redirigirAWhatsApp() {
+        // Intenta abrir en una nueva ventana/pestaña, lo cual es más robusto en webviews (TikTok)
+        window.open(whatsappLinkCompleto, "_blank"); 
+        cerrarChat(); // Cierra el chat si se abre desde el asistente
+    }
+    
+    // --- LÓGICA DEL CHAT SIMPLIFICADA ---
     const chatOverlay = document.getElementById('chatOverlay');
     const chatMessages = document.getElementById('chatMessages');
     const dropdownMenu = document.getElementById('dropdownMenu'); 
-    
-    // ENLACE DE WHATSAPP COMPLETO VERIFICADO
-    const whatsappLinkCompleto = "https://wa.me/17542486274?text=%22Hola%20Isabel%2C%20Me%20gustar%C3%ADa%20agendar%20una%20cita%20para%20la%20Sesi%C3%B3n%20Integral%20de%20Equilibrio%20Vibracional%20(%2450).%20Quedo%20atento(a)%20a%20tu%20disponibilidad%20y%20al%20proceso%20para%20reservar.%20%C2%A1Gracias!%22";
-
 
     function abrirChat() {
       chatOverlay.style.display = "flex";
@@ -451,14 +456,11 @@
     }
 
     function abrirAgendar() {
-      // Abre el chat y simula el inicio del proceso de agendamiento.
-      abrirChat();
-      if (chatMessages.lastChild && chatMessages.lastChild.classList.contains('option')) {
-        mostrarMensaje("user", "📅 Agendar una cita");
-      }
-      mostrarConfirmacionFinalSimplificada(); 
+      // Esta función ahora redirige directamente para el botón flotante
+      redirigirAWhatsApp();
     }
-
+    
+    // Función original de cerrar chat
     function cerrarChat(event) {
       if (event && event.target === chatOverlay) {
         chatOverlay.style.display = "none";
@@ -549,35 +551,10 @@
         const btnFinal = document.createElement('div');
         btnFinal.classList.add('option', 'whatsapp-final');
         btnFinal.textContent = "✅ Aceptar para Agendar Cita";
-        // Usa la función que apunta al enlace verificado (whatsappLinkCompleto)
-        btnFinal.onclick = enviarCitaWhatsAppSimplificada; 
+        // MODIFICACIÓN: Ahora llama a la función centralizada
+        btnFinal.onclick = redirigirAWhatsApp; 
         chatMessages.appendChild(btnFinal);
         chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-    
-    // Envío directo a WhatsApp con mensaje pre-escrito.
-    function enviarCitaWhatsAppSimplificada() {
-        // Usa el enlace verificado
-        window.open(whatsappLinkCompleto, "_blank"); 
-        
-        setTimeout(() => {
-            // Eliminar opciones previas para limpiar la interfaz del bot
-            const options = chatMessages.querySelectorAll('.option');
-            options.forEach(opt => opt.remove()); 
-            
-            mostrarMensaje("bot", "¡Mensaje enviado! Por favor, revisa WhatsApp. ¿Quieres volver al inicio o salir?");
-            const btnInicio = document.createElement('div');
-            btnInicio.classList.add('option');
-            btnInicio.textContent = "🔄 Volver al inicio";
-            btnInicio.onclick = () => { chatMessages.innerHTML = ""; abrirChat(); };
-            chatMessages.appendChild(btnInicio);
-
-            const btnSalir = document.createElement('div');
-            btnSalir.classList.add('option');
-            btnSalir.textContent = "❌ Salir";
-            btnSalir.onclick = () => cerrarChat(); 
-            chatMessages.appendChild(btnSalir);
-        }, 1000);
     }
     
     document.addEventListener('click', function(event) {
