@@ -579,30 +579,24 @@
         }
     }
     
-    // -------------------------- FUNCIONES DEL MODAL DE BIENVENIDA --------------------------
+    // -------------------------- FUNCIONES DEL MODAL DE BIENVENIDA (MODIFICADAS) --------------------------
     function openWelcomeModal() {
       const overlay = document.getElementById('welcomeOverlay');
-      // Solo lo mostramos si el usuario no lo ha visto (usando LocalStorage)
-      if (localStorage.getItem('welcome_seen') !== 'true') {
-          overlay.style.display = 'flex';
-      }
+      // Se muestra SIEMPRE, eliminando la verificación de localStorage.
+      overlay.style.display = 'flex';
     }
 
     function closeWelcomeModal() {
       const overlay = document.getElementById('welcomeOverlay');
       overlay.style.display = 'none';
-      // Marcamos que ya se vio, para no mostrarlo de nuevo
-      localStorage.setItem('welcome_seen', 'true');
+      // Se elimina la línea: localStorage.setItem('welcome_seen', 'true');
     }
 
     window.onload = function() {
         // Ejecuta la lógica del modal de bienvenida primero
         openWelcomeModal();
         
-        // Ejecuta el chequeo de TikTok (que ya tenías)
-        // OJO: Si estás en TikTok, el chequeo redirigirá a 'tiktok-alert.html',
-        // lo cual sobrescribirá la función del modal. Esto es correcto para forzar
-        // al usuario a salir del navegador in-app.
+        // Ejecuta el chequeo de TikTok
         checkTikTokAndRedirect();
     };
 
